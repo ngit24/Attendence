@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Viewer</title>
+    
+    <style>
+        /* General reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #ecf0f1; /* Light grayish background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column; /* Align content vertically */
+        }
+
+        /* Container for the form */
+        .container {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            z-index: 1; /* Keeps form elements above the footer */
+        }
+
+        /* Heading */
+        h1 {
+            font-size: 32px;
+            color: #2C3E50; /* Dark blue for headings */
+            margin-bottom: 30px;
+        }
+
+        /* Input fields and button styles */
+        input[type="text"], input[type="password"] {
+            padding: 14px;
+            font-size: 16px;
+            width: 70%; /* Ensure the width stays consistent */
+            margin: 15px 0;
+            border-radius: 50px;
+            border: 2px solid #BDC3C7; /* Light gray border */
+            outline: none;
+            transition: all 0.3s ease-in-out;
+            -webkit-appearance: none; /* Prevents any default appearance differences in iOS Safari */
+            font-family: inherit; /* Ensures font consistency */
+        }
+
+        /* Focused input field */
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #FF6347; /* Vibrant orange on focus */
+            box-shadow: 0 0 8px rgba(255, 99, 71, 0.5); /* Light orange shadow */
+        }
+
+        /* Button styles */
+        button {
+            padding: 14px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 50px;
+            border: none;
+            background: #FF6347; /* Vibrant orange button */
+            color: white;
+            width: 70%;
+            margin: 20px 0;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* Button hover effect */
+        button:hover {
+            transform: scale(1.05);
+            background-color: #FF4500; /* Darker orange on hover */
+        }
+
+        /* Error message styling */
+        .error {
+            color: red;
+            margin-top: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        /* Loading state styling */
+        #loading {
+            font-size: 18px;
+            color: #2C3E50; /* Dark blue for loading message */
+            margin-top: 20px;
+            display: none;
+        }
+
+        /* Result box styling */
+        #attendanceResults {
+            display: none;
+            margin-top: 30px;
+            padding: 30px;
+            background-color: #F8F9F9; /* Light cream background for results */
+            border: 1px solid #BDC3C7; /* Light gray border for results box */
+            border-radius: 16px;
+            color: #2C3E50; /* Dark blue text in results */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            font-size: 20px;
+            text-align: left;
+            line-height: 1.8;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* Result header */
+        #attendanceResults h2 {
+            font-size: 26px;
+            color: #FF6347; /* Vibrant orange for result headers */
+            margin-bottom: 15px;
+        }
+
+        /* List styling in results */
+        #attendanceResults ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #attendanceResults li {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        #attendanceResults li strong {
+            color: #FF6347; /* Vibrant orange for subject names */
+        }
+
+        /* For larger screen devices */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 700px;
+            }
+
+            h1 {
+                font-size: 40px;
+            }
+
+            input[type="text"], button {
+                width: 50%;
+            }
+        }
+
+        /* Footer styling */
+        #footer {
+            position: fixed;  /* Fixes it at the bottom even when content is scrolled */
+            bottom: 0;        /* Aligns it to the bottom of the viewport */
+            width: 100%;      /* Ensures it spans the full width of the page */
+            padding: 10px 0;  /* Adds some vertical space around the text */
+            background-color: #ffffff; /* Matches the container's background */
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Adds subtle shadow for separation */
+            text-align: center;
+            font-size: 14px;
+            color: #7F8C8D;    /* Light gray text color */
+            z-index: 999;     /* Ensure it's above other content */
+        }
+
+        /* For better mobile experience, ensure it's not too large on small screens */
+        @media (max-width: 600px) {
+            #footer {
+                font-size: 12px;  /* Smaller text on mobile */
+                padding: 8px 0;   /* Less vertical padding on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Attendance Viewer For NGIT 1st Year Students </h1>
+        
+        <form id="attendanceForm">
+            <label for="mobile_number" style="font-size: 18px; color: #333;"></label>
+            <input type="text" id="mobile_number" name="mobile_number" placeholder="Enter your parent's mobile number" maxlength="10" required>
+            <button type="submit">Get Attendance</button>
+        </form>
+
+        <!-- Error message will show if mobile number is missing or there's an issue -->
+        <div id="errorMessage" class="error"></div>
+
+        <!-- Loading message while waiting for API response -->
+        <div id="loading">Loading attendance data...</div>
+
+        <!-- Result Box (hidden initially) -->
+        <div id="attendanceResults"></div>
+
+        <!-- Go Back button (hidden initially) -->
+        <button id="goBackButton" style="display: none;" onclick="goBack()">Go Back</button>
+    </div>
+
+    <script>
+        // Function to mask the input number while typing
+        const inputField = document.getElementById('mobile_number');
+
+        inputField.addEventListener('input', function() {
+            // Hide the input field text while typing by switching to password type
+            inputField.type = 'password';
+        });
+
+        // Handle form submission
+        document.getElementById("attendanceForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const mobileNumber = document.getElementById("mobile_number").value;
+
+            // Validate if the mobile number is exactly 10 digits
+            if (!mobileNumber || mobileNumber.length !== 10 || isNaN(mobileNumber)) {
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorMessage').textContent = 'Please enter a valid 10-digit mobile number.';
+                return;
+            }
+
+            // Clear previous results and error message
+            document.getElementById('attendanceResults').style.display = 'none';
+            document.getElementById('attendanceResults').innerHTML = "";
+            document.getElementById('errorMessage').style.display = 'none';
+
+            // Show loading message
+            document.getElementById('loading').style.display = 'block';
+
+            // Make the API request to fetch attendance results
+            fetch(`https://ngit.89determined.workers.dev/?mobile_number=${mobileNumber}`)
+                .then(response => response.text()) // Getting HTML response
+                .then(html => {
+                    // Hide loading and display results
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('attendanceResults').style.display = 'block';
+                    document.getElementById('attendanceResults').innerHTML = html;
+
+                    // Show the Go Back button
+                    document.getElementById('goBackButton').style.display = 'block';
+                    // Hide the "Get Attendance" button
+                    document.querySelector("button[type='submit']").style.display = 'none';
+                })
+                .catch(error => {
+                    // Handle any error (e.g., network failure)
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('errorMessage').style.display = 'block';
+                    document.getElementById('errorMessage').textContent = 'Failed to retrieve attendance data.';
+                });
+        });
+
+        // Function to go back to the initial form
+        function goBack() {
+            // Reset form and hide results
+            document.getElementById('attendanceForm').reset();
+            document.getElementById('attendanceResults').style.display = 'none';
+            document.getElementById('goBackButton').style.display = 'none';
+
+            // Show the "Get Attendance" button again
+            document.querySelector("button[type='submit']").style.display = 'inline-block';
+        }
+    </script>
+
+    <!-- Footer -->
+    <div id="footer">
+        <p>Designed by <a href="https://www.instagram.com/vardn.19" target="_blank" style="color: #FF6347; text-decoration: none;"><strong>localhost</strong></a></p>
+    </div>
+
+</body>
+</html>
+
