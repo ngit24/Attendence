@@ -185,12 +185,19 @@
                 padding: 8px 0;
             }
         }
+
+        /* Flex container for Go Back and Contact Me buttons */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Space between buttons */
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Attendence Viewer For NGIT 1st Year Students</h1>
+        <h1>Attendance Viewer For NGIT 1st Year Students</h1>
         
         <form id="attendanceForm">
             <label for="mobile_number" style="font-size: 18px; color: #333;"></label>
@@ -207,8 +214,13 @@
         <!-- Result Box (hidden initially) -->
         <div id="attendanceResults"></div>
 
-        <!-- Go Back button (hidden initially) -->
-        <button id="goBackButton" style="display: none;" onclick="goBack()">Go Back</button>
+        <!-- Button container (Go Back and Contact Me buttons) -->
+        <div id="buttonContainer" class="button-container" style="display: none;">
+            <!-- Go Back button (hidden initially) -->
+            <button id="goBackButton" onclick="goBack()">Go Back</button>
+            <!-- Contact Me button (hidden initially) -->
+            <button id="contactMeButton" onclick="contactMe()">Contact Me</button>
+        </div>
     </div>
 
     <script>
@@ -254,8 +266,8 @@
                     document.getElementById('attendanceResults').style.display = 'block';
                     document.getElementById('attendanceResults').innerHTML = html;
 
-                    // Show the Go Back button
-                    document.getElementById('goBackButton').style.display = 'block';
+                    // Show both Go Back and Contact Me buttons
+                    document.getElementById('buttonContainer').style.display = 'flex';
                     // Hide the "Get Attendance" button
                     document.querySelector("button[type='submit']").style.display = 'none';
                 })
@@ -275,7 +287,7 @@
 
             // Hide the results and the Go Back button
             document.getElementById('attendanceResults').style.display = 'none';
-            document.getElementById('goBackButton').style.display = 'none';
+            document.getElementById('buttonContainer').style.display = 'none'; // Hide button container
 
             // Show the heading and form again
             document.querySelector('h1').style.display = 'block';
@@ -284,11 +296,16 @@
             // Show the "Get Attendance" button again
             document.querySelector("button[type='submit']").style.display = 'inline-block';
         }
+
+        // Function to open Instagram profile when Contact Me is clicked
+        function contactMe() {
+            window.open('https://www.instagram.com/vardn.19', '_blank');
+        }
     </script>
 
     <!-- Footer -->
     <div id="footer">
-        <p>Designed by <a href="https://www.instagram.com/vardn.19" target="_blank" style="color: #FF6347; text-decoration: none;"><strong>Vardan</strong></a></p>
+        <p>Designed by <strong><a href="https://www.instagram.com/vardn.19" target="_blank" style="color: #FF6347; text-decoration: none;">Vardan</a></strong></p>
     </div>
 
 </body>
