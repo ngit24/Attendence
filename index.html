@@ -1,412 +1,210 @@
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Attendance Viewer</title>
-		
-		<!-- Link to Google Fonts (Poppins font) -->
-		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-		<!-- Add a new font link to the head section -->
+<!DOCTYPE html>
+<html lang="en">
 
-
-	<style>
-	/* General reset */
-	* {
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-	}
-
-	/* Apply Poppins font to all elements */
-	body, h1, h2, h3, h4, h5, h6, input, button, p {
-		font-family: 'Poppins', sans-serif;
-	}
-
-	/* Body styling */
-	body {
-		font-family: 'Poppins', sans-serif;
-		background-color: #F4F7FA; /* Light gray background */
-		display: flex;
-		justify-content: center;
-		align-items: flex-start; /* Align items at the top */
-		min-height: 100vh;
-		flex-direction: column;
-		width: 100%; /* Ensure full width of the screen */
-		padding-top: 70px; /* Give space for the floating greeting */
-		overflow-x: hidden; /* Prevent horizontal scrolling */
-	}
-
-	/* Container for the form */
-	.container {
-		background-color: #FFFFFF;
-		border-radius: 12px;
-		padding: 40px;
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-		width: 100%;
-		max-width: 600px;
-		text-align: center;
-		margin: 0 auto; /* Center the container */
-	}
-
-	/* Heading */
-	h1 {
-		font-size: 40px;
-		color: #2C3E50; /* Dark gray for heading */
-		margin-bottom: 25px;
-		font-weight: 600;
-	}
-
-	#floatingGreeting {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #FFFFFF;
-    border: 2px solid #FF6347;
-    border-radius: 20px;
-    padding: 10px 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    font-size: 24px; /* Increase font size */
-    font-weight: bold; /* Make text bold */
-    font-family: inherit; /* Keep the default font (same as the body) */
-    z-index: 10000;
-    text-align: center;
-    display: none;
-}
-
-
-
-/* For smaller screens (Mobile) */
-@media (max-width: 600px) {
-    #floatingGreeting {
-        font-size: 20px; /* Adjust text size for mobile */
-        padding: 15px 30px; /* Adjust padding for smaller screens */
-        width: 90%; /* Ensure greeting bubble doesn't go off-screen */
-        max-width: 350px; /* Ensure it doesn't get too wide */
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+   <style>
+    :root {
+        --primary-color: #FF6347; /* Tomato red */
+        --secondary-color: #f9fbfd; /* Keeping secondary as is */
+        --accent-color: #4CAF50; /* Keeping accent as is */
+        --text-color: #333; /* Text color unchanged */
+        --border-radius: 10px;
+        --button-hover: #CC4F39; /* Darker tomato red for hover */
+        --heading-font-size: 2.2rem;
+        --subheading-font-size: 1.5rem;
+        --shadow-color: rgba(0, 0, 0, 0.1); /* Shadow color unchanged */
     }
 
-    /* Button container for Go Back and Contact Me */
-    .button-container button {
-        width: 100%; /* Full width for mobile screens */
-        margin: 10px 0; /* Add margin between buttons */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
-    /* Adjust the container padding for small screens */
-    .container {
-        max-width: 100%;
+    html,
+    body {
+        height: 100%;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #f4f6f9, #e9f0f8);
+        color: var(--text-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
         padding: 20px;
     }
 
-    /* Adjust the heading size for small screens */
     h1 {
-        font-size: 28px;
+        font-size: var(--heading-font-size);
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 20px;
     }
 
-    input[type="text"], button {
+    .container {
+        background: #fff;
+        padding: 40px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 8px 16px var(--shadow-color);
         width: 100%;
+        max-width: 450px;
+        text-align: center;
+        margin-bottom: 20px; /* Added margin to separate from the footer */
     }
-}
 
+    input {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        margin-bottom: 20px;
+        transition: border-color 0.3s ease;
+    }
 
-	/* Input fields and button styles */
-	input[type="text"], input[type="password"] {
-		padding: 16px;
-		font-size: 18px;
-		width: 100%;
-		margin: 12px 0;
-		border-radius: 30px;
-		border: 2px solid #BDC3C7; /* Light gray border */
-		outline: none;
-		transition: all 0.3s ease-in-out;
-		font-family: inherit;
-	}
+    input:focus {
+        border-color: var(--primary-color);
+        outline: none;
+    }
 
-	/* Button styles */
-	button {
-		padding: 16px 32px;
-		font-size: 20px;
-		cursor: pointer;
-		border-radius: 30px;
-		border: none;
-		background: #FF6347; /* Tomato color background */
-		color: white;
-		width: 100%;
-		margin: 18px 0;
-		transition: transform 0.3s ease, background-color 0.3s ease;
-		font-weight: 600;
-	}
-	/* Loading state styling */
-	#loading {
-		font-size: 18px;
-		color: #2C3E50; /* Dark gray text for loading */
-		margin-top: 20px;
-		display: none; /* Ensure it is hidden by default */
-	}
+    button {
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: var(--border-radius);
+        background: var(--primary-color);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin: 5px;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
 
+    button:hover {
+        background: var(--button-hover);
+        transform: translateY(-2px);
+    }
 
-	/* Error message styling */
-	.error {
-		color: #E74C3C; /* Red for error messages */
-		margin-top: 20px;
-		font-size: 14px;
-		display: none;
-	}
+    .message {
+        color: #d32f2f; /* Keeping error message color unchanged */
+        font-size: 0.9rem;
+        margin-top: -10px;
+        margin-bottom: 15px;
+        display: none;
+    }
 
-	/* Result box styling */
-	#attendanceResults {
-		display: none;
-		margin-top: 50px; /* Ensure space between form and results */
-		padding: 30px;
-		background-color: #ECF0F1; /* Light gray background */
-		border: 1px solid #BDC3C7; /* Light gray border */
-		border-radius: 10px;
-		color: #2C3E50; /* Dark gray text */
-		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-		font-size: 16px;
-		text-align: left;
-		line-height: 1.8;
-	}
- /* Result header */
-        #attendanceResults h4 {
-            font-size: 23px;
-            color: #FF6347; /* Tomato for headers */
-            margin-bottom: 15px;
-        }
-        /* Result header */
-        #attendanceResults h3 {
-            font-size: 16px;
-            color: #2C3E50; /* Tomato for headers */
-            margin-bottom: 15px;
-        }
-        /* List styling in results */
-        #attendanceResults ul {
-            list-style-type: none;
-            padding: 0;
-        }
+    /* Footer styling */
+    #footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 10px 0;
+        background-color: #FFFFFF; /* Light tomato tint */
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        font-size: 16px;
+        color: #BDC3C7; /* Tomato red footer text */
+    }
 
-        #attendanceResults li {
+    /* For better mobile experience */
+    @media (max-width: 600px) {
+        #footer {
             font-size: 14px;
-            margin: 10px 0;
+            padding: 8px 0;
+        }
+    }
+
+    /* Date and Time Styles */
+    .date-time {
+        position: fixed;
+        top: 5px;
+        right: 10px;
+        font-size: 1.5rem;
+        color: black;
+        font-family: inherit;
+        z-index: 10;
+    }
+
+    /* DM Button Styling */
+    .query-button {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .query-button button {
+        padding: 8px 16px; /* Reduced padding */
+        font-size: 14px; /* Smaller font size */
+        width: auto; /* Auto width to fit the content */
+    }
+</style>
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>Ready to check your attendance and grades? 📝</h1>
+
+        <div>
+            <input type="text" id="mobileNumber" placeholder="Enter parent's mobile number" maxlength="10"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            <p id="error-message" class="message">Please enter a valid 10-digit mobile number.</p>
+        </div>
+
+        <div>
+            <button onclick="redirect('attendance')">View Attendance</button>
+        </div>
+    </div>
+
+    <!-- Contact Me Button (Moved above footer) -->
+    <div class="query-button">
+        <button onclick="window.open('https://www.instagram.com/vardn.19', '_blank')">Have any queries? DM Me</button>
+    </div>
+    
+    <div id="date-time" class="date-time"></div>
+
+    <!-- Footer -->
+    <div id="footer">
+        <p>Designed by <strong><a href="https://www.instagram.com/vardn.19" target="_blank" style="color: #FF6347; text-decoration: none;">Vardan</a></strong></p>
+    </div>
+
+    <script>
+        function updateDateTime() {
+            const dateTimeElement = document.getElementById('date-time');
+            const currentDate = new Date();
+
+            // Format the date and time
+            const hours = String(currentDate.getHours()).padStart(2, '0');
+            const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+            const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+            const day = currentDate.toLocaleDateString('en-US', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+
+            // Set the formatted time and date
+            dateTimeElement.textContent = `${day} ${hours}:${minutes}:${seconds}`;
+
+            // Update every second
+            setTimeout(updateDateTime, 1000);
         }
 
-        #attendanceResults li strong {
-            color: #2C3E50; /* Tomato for subject names */
+        // Call the updateDateTime function on page load
+        updateDateTime();
+
+        function redirect(page) {
+            const mobileNumber = document.getElementById('mobileNumber').value;
+            const errorMessage = document.getElementById('error-message');
+
+            if (mobileNumber.length !== 10) {
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            errorMessage.style.display = 'none';
+            localStorage.setItem('mobileNumber', mobileNumber);
+            window.location.href = `${page}.html`;
         }
-		
-		 /* Flex container for Go Back and Contact Me buttons */
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px; /* Space between buttons */
-        }
+    </script>
+</body>
 
-	/* Footer styling */
-	#footer {
-		position: fixed;
-		bottom: 0;
-		width: 100%;
-		padding: 10px 0;
-		background-color: #FFFFFF;
-		box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-		text-align: center;
-		font-size: 16px;
-		color: #BDC3C7;
-	}
-
-	/* For better mobile experience */
-	@media (max-width: 600px) {
-		#floatingGreeting {
-			font-size: 16px;
-			padding: 8px 16px;
-		}
-
-		/* Adjust for small screens */
-		.container {
-			max-width: 100%;
-			padding: 20px;
-		}
-
-		h1 {
-			font-size: 28px;
-		}
-
-		input[type="text"], button {
-			width: 100%;
-		}
-	}
-
-	/* Ensure we can scroll content */
-	html, body {
-		height: 100%; /* Full viewport height */
-		overflow-x: hidden; /* Prevent horizontal scroll */
-		overflow-y: auto; /* Allow vertical scrolling */
-	}
-
-
-
-	</style>
-
-	</head>
-	<body>
-
-		<div class="container">
-			<h1>Attendance Viewer For NGIT 1st Year's</h1>
-			
-			<form id="attendanceForm">
-				<label for="mobile_number" style="font-size: 18px; color: #333;"></label>
-				<input type="text" id="mobile_number" name="mobile_number" placeholder="Enter your parent's mobile number" maxlength="10" required>
-				<button type="submit">Get Attendance</button>
-			</form>
-
-			<!-- Error message will show if mobile number is missing or there's an issue -->
-			<div id="errorMessage" class="error"></div>
-
-			<!-- Loading message while waiting for API response -->
-			<div id="loading">Loading...</div>
-
-		 
-
-	<!-- Result Box (hidden initially) -->
-	<div id="attendanceResults"></div>
-
-
-			<!-- Button container (Go Back and Contact Me buttons) -->
-			<div id="buttonContainer" class="button-container" style="display: none;">
-				<!-- Go Back button (hidden initially) -->
-				<button id="goBackButton" onclick="goBack()">Go Back</button>
-				<!-- Contact Me button (hidden initially) -->
-				<button id="contactMeButton" onclick="contactMe()">Contact Me</button>
-			</div>
-		</div>
-
-		<script>
-		// Function to reload the page
-		function goBack() {
-			location.reload(); // Reloads the current page
-		}
-			// Function to mask the input number while typing
-			const inputField = document.getElementById('mobile_number');
-
-			inputField.addEventListener('input', function() {
-				// Hide the input field text while typing by switching to password type
-				inputField.type = 'text';
-			});
-			
-		// Function to fetch and display the user's name in the floating bubble with dynamic greeting and emoji
-	function fetchAndDisplayName(mobileNumber) {
-		// Get current hours
-		const hours = new Date().getHours();
-		let greeting;
-
-		// Determine the greeting based on the time of day with emojis
-		if (hours >= 00 && hours < 12) {
-			greeting = "Good Morning ☀️";
-		} else if (hours >= 12 && hours < 17) {
-			greeting = "Good Afternoon 🌤️";
-		} else if (hours >= 17 && hours < 24) {
-			greeting = "Good Evening 🌆";
-		} else {
-			greeting = "Good Night 🌙";
-		}
-
-		// Fetch the user's name
-		fetch(`https://nam969.89determined.workers.dev/?mobile_number=${mobileNumber}`)
-			.then(response => response.text()) // Get the plain text name from the response
-			.then(name => {
-				// Update the floating greeting
-				const floatingGreeting = document.getElementById('floatingGreeting');
-				floatingGreeting.innerHTML = `${greeting},<br><span>${name}</span>`;
-				floatingGreeting.style.display = 'block'; // Show the greeting bubble
-			})
-			.catch(error => {
-				console.error('Failed to fetch user name:', error);
-			});
-	}
-
-
-
-	document.getElementById("attendanceForm").addEventListener("submit", function(event) {
-		event.preventDefault();
-
-		const mobileNumber = document.getElementById("mobile_number").value;
-
-		// Validate if the mobile number is exactly 10 digits
-		if (!mobileNumber || mobileNumber.length !== 10 || isNaN(mobileNumber)) {
-			document.getElementById('errorMessage').style.display = 'block';
-			document.getElementById('errorMessage').textContent = 'Please enter a valid 10-digit mobile number.';
-			
-			// Hide the floating greeting when there's an error
-			document.getElementById('floatingGreeting').style.display = 'none';
-			return;
-		}
-
-		// Hide form and heading
-		document.querySelector('h1').style.display = 'none';
-		document.getElementById('attendanceForm').style.display = 'none';
-
-		// Clear previous results and error message
-		document.getElementById('attendanceResults').style.display = 'none';
-		document.getElementById('attendanceResults').innerHTML = "";
-		document.getElementById('errorMessage').style.display = 'none';
-
-		// Show loading message
-		document.getElementById('loading').style.display = 'block';
-
-		// First, fetch and display the user's name
-		fetchAndDisplayName(mobileNumber);
-
-		// Make the API request to fetch attendance results
-		fetch(`https://sanjaya969.89determined.workers.dev/?mobile_number=${mobileNumber}`)
-			.then(response => response.text()) // Getting HTML response
-			.then(html => {
-				// Check if the API response contains the specific error message
-				if (html.includes("Incorrect Number, Go back & Enter Your Parents Number.")) {
-					// Hide the greeting if the error message is found
-					document.getElementById('floatingGreeting').style.display = 'none';
-				}
-
-				// Hide loading and display results
-				document.getElementById('loading').style.display = 'none';
-				document.getElementById('attendanceResults').style.display = 'block';
-				document.getElementById('attendanceResults').innerHTML = html;
-
-				// Show both Go Back and Contact Me buttons
-				document.getElementById('buttonContainer').style.display = 'flex';
-				// Hide the "Get Attendance" button
-				document.querySelector("button[type='submit']").style.display = 'none';
-
-				// Only display the floating greeting when there is no error
-				if (!html.includes("Incorrect Number, Go back & Enter Your Parents Number.")) {
-					document.getElementById('floatingGreeting').style.display = 'block';
-				}
-			})
-			.catch(error => {
-				// Handle any error (e.g., network failure)
-				document.getElementById('loading').style.display = 'none';
-				document.getElementById('errorMessage').style.display = 'block';
-				document.getElementById('errorMessage').textContent = 'Failed to retrieve attendance data.';
-				
-				// Hide the floating greeting in case of an error
-				document.getElementById('floatingGreeting').style.display = 'none';
-			});
-	});
-
-
-			// Function to open Instagram profile when Contact Me is clicked
-			function contactMe() {
-				window.open('https://www.instagram.com/vardn.19', '_blank');
-			}
-		</script>
-
-		<!-- Footer -->
-		<div id="footer">
-			<p>Designed by <strong><a href="https://www.instagram.com/vardn.19" target="_blank" style="color: #FF6347; text-decoration: none;">Vardan</a></strong></p>
-		</div>
-	<!-- Floating Greeting -->
-	<div id="floatingGreeting" style="display: none;"></div>
-
-
-
-	</body>
-	</html>
+</html>
