@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIE</title>
+<style>
+    :root {
+        --primary-color: #007BFF; /* Bright Blue */
+        --secondary-color: #f9f9f9; /* Light Gray */
+        --font-color: #333; /* Dark Gray for Text */
+        --border-radius: 8px;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: var(--secondary-color);
+        color: var(--font-color);
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
+
+    #content {
+        margin-top: 20px;
+        font-size: 1rem;
+    }
+
+    h2 {
+        font-size: 1rem;
+        color: var(--primary-color);
+        margin-top: 30px;
+    }
+
+    table {
+        width: 90%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        background: #fff;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background: var(--primary-color); /* Bright Blue for Table Headers */
+        color: #fff;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    td:nth-child(even) {
+        background: #f2f2f2;
+    }
+
+    td {
+        background: #fff;
+        font-size: 0.95rem;
+    }
+
+    button {
+        background: var(--primary-color); /* Bright Blue for Buttons */
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+    }
+
+    button:hover {
+        background: #0056b3; /* Darker Blue for Button Hover */
+    }
+
+    /* Hide Button */
+    .hidden {
+        display: none;
+    }
+
+    /* Loader Styling */
+    .loader {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid var(--primary-color);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 50px auto;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+
+
+
+    /* Styling for the greeting */
+    .greeting {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #ff6347;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .greeting-text {
+        color: black; /* Black color for the greeting */
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .name-text {
+        color: #ff6347; /* Tomato red color for the name */
+        font-size: 1.8rem;
+        font-weight: 700;
+        font-family: inherit; /* Use the default font of the page */
+    }
+    /* Date and Time Styles */
+    .date-time {
+        position: fixed;
+        top: 5px;
+        right: 10px;
+        font-size: 1.5rem;
+        color: black;
+        font-family: inherit;
+        z-index: 10;
+    }
+</style>
+
+</head>
+<body>
+    <!-- Greeting section -->
+    <div id="greeting" class="greeting">Loading...</div> <!-- Greeting will appear here -->
+
+    <div id="content">
+        <div class="loader"></div> <!-- Loader is shown here -->
+    </div>
+    <button id="backButton" class="hidden" onclick="goBack()">Go Back</button>
+
+
+
+    <script>
+    
+        function goBack() {
+            window.location.href = 'attendance.html';
+        }
+
+        // Fetch user name based on mobile number
+        async function fetchName() {
+            const mobileNumber = localStorage.getItem('mobileNumber');
+            if (!mobileNumber) return;
+
+            try {
+                const response = await fetch(`https://nam969.89determined.workers.dev/?mobile_number=${mobileNumber}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch name');
+                }
+                const name = await response.text();
+                displayGreeting(name);
+            } catch (error) {
+                console.error("Error fetching name:", error);
+            }
+        }
+
+        // Display the greeting based on the time of day
+    function displayGreeting(name) {
+    const greetingDiv = document.getElementById('greeting');
+    const currentHour = new Date().getHours();
+    let greeting = "Good Day";
+
+    if (currentHour < 12) {
+        greeting = `Good Morning, ${name}`;
+    } else if (currentHour < 17) {
+        greeting = `Good Afternoon, ${name}`;
+    } else if (currentHour < 21) {
+        greeting = `Good Evening, ${name}`;
+    } else {
+        greeting = `Good Night, ${name}`;
+    }
+
+    // Use the greeting with the comma explicitly included
+    greetingDiv.innerHTML = `<span class="greeting-text">${greeting.split(',')[0]},</span><br><span class="name-text">${greeting.split(',')[1]}</span>`;
+
+
+    // Add greeting and name with different colors
+    greetingDiv.innerHTML = `<span class="greeting-text">${greetingText}</span><br><span class="name-text">${nameText}</span>`;
+}
+
+
+
+        async function fetchCIE() {
+            const mobileNumber = localStorage.getItem('mobileNumber');
+            const contentDiv = document.getElementById('content');
+            const backButton = document.getElementById('backButton');
+
+            if (!mobileNumber) {
+                contentDiv.innerHTML = "<p>No mobile number found.</p>";
+                backButton.classList.remove('hidden'); // Show the button
+                return;
+            }
+
+            try {
+                const rollNumberResponse = await fetch(`https://roll.89determined.workers.dev/?mobile_number=${mobileNumber}`);
+                const rollNumber = await rollNumberResponse.text().then(text => text.trim());
+
+                if (!rollNumber) {
+                    contentDiv.innerHTML = "<p>No roll number returned.</p>";
+                    backButton.classList.remove('hidden'); // Show the button
+                    return;
+                }
+
+                const cieResponse = await fetch(`https://teleuniv.net.in/trinetra/pages/lib/student_ajaxfile.php?mid=76&rollno=${rollNumber}`);
+                const cieContent = await cieResponse.text();
+
+                // Parse the response and display it as a table
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(cieContent, 'text/html');
+
+                const contentDiv = document.getElementById('content');
+                contentDiv.innerHTML = ''; // Clear existing content
+
+                const sections = doc.querySelectorAll('.box-body');
+                sections.forEach(section => {
+                    const title = section.querySelector('h2').textContent;
+
+                    // Only include sections with "1st INTERNAL"
+                    if (!title.includes("1st INTERNAL")) return;
+
+                    const table = section.querySelector('table');
+
+                    // Create a new section for the table
+                    const sectionDiv = document.createElement('div');
+                    sectionDiv.innerHTML = `<h2>${title}</h2>`;
+
+                    const newTable = document.createElement('table');
+                    const rows = table.querySelectorAll('tr');
+
+                    rows.forEach((row, rowIndex) => {
+                        const tr = document.createElement('tr');
+                        row.querySelectorAll('td, th').forEach((cell, cellIndex) => {
+                            // Skip columns: Type (1), Lab Internal 1 (2), DTD 1 (3)
+                            if (cellIndex === 1 || cellIndex === 2 || cellIndex === 3) return;
+
+                            const newCell = document.createElement(cell.tagName.toLowerCase());
+                            newCell.textContent = cell.textContent;
+                            tr.appendChild(newCell);
+                        });
+                        newTable.appendChild(tr);
+                    });
+
+                    sectionDiv.appendChild(newTable);
+                    contentDiv.appendChild(sectionDiv);
+                });
+            } catch (error) {
+                document.getElementById('content').textContent = "Failed to load CIE data.";
+                console.error(error);
+            } finally {
+                backButton.classList.remove('hidden'); // Show the button after data loading
+            }
+        }
+
+        // Fetch the user's name and CIE data on page load
+        fetchName();
+        fetchCIE();
+    </script>
+  
+
+<!-- Footer HTML -->
+<div id="footer">
+    <p>Designed by <strong><a href="https://www.instagram.com/vardn.19" target="_blank">Vardan</a></strong></p>
+</div>
+
+<!-- Footer CSS -->
+<style>
+    /* Footer styling */
+    #footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+        color: #333; /* Dark gray color for text */
+        padding: 10px 0;
+    }
+
+    /* Styling for the strong tag (Vardan's name) */
+    #footer strong {
+        color: #007BFF; /* Blue color for emphasis */
+    }
+
+    /* Styling for the link */
+    #footer a {
+        color: #007BFF; /* Blue color for link */
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    #footer a:hover {
+        text-decoration: underline; /* Underline on hover */
+    }
+</style>
+
+</body>
+</html>
