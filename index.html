@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Viewer</title>
+  
+   <style>
+  .home-ui {
+    text-align: center;
+    padding: 20px;
+    background-color: #f4f4f9; /* Grey background */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.welcome-box h2 {
+    font-size: 2em;
+    color: #333; /* Black text for greeting */
+    margin-bottom: 10px;
+}
+
+.welcome-box p {
+    font-size: 1.2em;
+    color: #666; /* Blackish text */
+}
+
+.input-box input {
+    padding: 10px;
+    font-size: 1.2em;
+    width: 200px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-box button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.input-box button:hover {
+    background-color: #0056b3;
+}
+
+/* Add the tomato red color for the name */
+.welcome-box span.name {
+    color: tomato; /* Tomato color for the name */
+    font-weight: bold;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    margin: 0;
+    background-color: #f4f4f9; /* Grey background for the entire body */
+}
+
+/* Keeping table styling as before */
+.attendance-table, .subject-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.attendance-table th, .attendance-table td, .subject-table th, .subject-table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 12px;
+}
+
+.attendance-table th, .subject-table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.attendance-table td.present {
+    background-color: #4caf50;
+    color: white;
+}
+
+.attendance-table td.absent {
+    background-color: #f44336;
+    color: white;
+}
+
+.attendance-table td.nosessions {
+    background-color: #9e9e9e;
+    color: white;
+}
+
+.attendance-table td.circle {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 10px;
+    font-size: 7px;
+}
+
+.attendance-table td.circle.present {
+    background-color: #4caf50;
+    color: white;
+}
+
+.attendance-table td.circle.absent {
+    background-color: #f44336;
+    color: white;
+}
+
+.attendance-table td.circle.nosessions {
+    background-color: #9e9e9e;
+    color: white;
+}
+
+.total-percentage {
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    text-align: center;
+    color: black; /* Black text for general content */
+}
+
+.student-name {
+    color: tomato; /* Tomato red for student name */
+    font-weight: bold;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.box-header {
+    font-size: 1.3em;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.9em;
+}
+
+footer a {
+    color: #ff6347; /* Tomato color for name */
+    text-decoration: none; /* Removes underline */
+    font-weight: bold; /* Make name bold */
+}
+
+footer a:hover {
+    color: #ff4500; /* Change color on hover */
+}
+#loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+    color: #333; /* Dark text color */
+    text-align: center;
+    background: rgba(255, 255, 255, 0.8); /* Slight white background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+    display: none; /* Hidden by default */
+    transition: opacity 0.3s ease-in-out;
+}
+
+#loading span {
+    font-size: 2em; /* Slightly larger emoji */
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+
+@media (max-width: 600px) {
+    .attendance-table td, .subject-table td {
+        font-size: 10px;
+    }
+
+    .attendance-table th, .subject-table th {
+        font-size: 12px;
+    }
+
+    .attendance-table td.circle {
+        width: 8px;
+        height: 8px;
+        font-size: 7px;
+        line-height: 8px;
+    }
+
+    .box {
+        padding: 15px;
+    }
+}
+
+
+
+    </style>
+</head>
+<body>
+    <div id="home-ui" class="home-ui">
+
+        <div class="welcome-box">
+            <h2>NGIT Attendance Viewer</h2>
+            <p>Enter your Parents mobile number</p>
+        </div>
+        <div class="input-box">
+            <input type="text" id="rollno" placeholder="mobile Number" maxlength="10">
+        </div>
+    </div>
+
+    <div id="attendance-result"></div>
+ 
+
+	<div id="loading">
+    <span></span> Calculating attendance... please wait! <span></span>
+</div>
+
+   <footer>
+    <span>Designed by <a href="https://www.instagram.com/vardn.19" target="_blank">Vardan</a></span>
+</footer>
+
+
+
+<script>
+
+async function fetchAttendance() {
+    const rollno = document.getElementById('rollno').value;
+    if (rollno.length !== 10) {
+        alert("Please enter a valid 10-digit Mobile number.");
+        return;
+    }
+
+    // Show a funny loading message
+    const resultDiv = document.getElementById('attendance-result');
+    resultDiv.innerHTML = `<p>Processing data... Just a moment!</p>`;
+
+    try {
+        // Fetch attendance data
+        const attendanceResponse = await fetch(`https://donalduck969.89determined.workers.dev/?mobile_number=${rollno}`);
+        if (!attendanceResponse.ok) throw new Error('Incorrect number, Enter your parents number');
+
+        const attendanceData = await attendanceResponse.json();
+
+        // Fetch student name
+        const nameResponse = await fetch(`https://nam969.89determined.workers.dev/?mobile_number=${rollno}`);
+        if (!nameResponse.ok) throw new Error('Incorrect number, Enter your parents number');
+
+        const studentName = await nameResponse.text();
+
+        // Display results
+		document.querySelector('.home-ui').style.display = 'none';
+        displayAttendance(attendanceData, studentName.trim());
+    } catch (error) {
+        resultDiv.innerHTML = `<p style="color:red;">${error.message}</p>`;
+    }
+}
+
+function getGreeting() {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning 🌞,";
+    if (hour < 18) return "Good Afternoon ☀,️";
+    return "Good Evening 🌃,";
+}
+
+function displayAttendance(data, studentName) {
+    // Hide the home UI
+    document.getElementById('home-ui').classList.add('hidden');
+
+    const resultDiv = document.getElementById('attendance-result');
+    resultDiv.innerHTML = '';
+
+    // Add greeting with student name
+    const greeting = getGreeting();
+    const studentNameHTML = `
+    <div class="total-percentage">
+        <span>${greeting}</span><br>
+        <span class="student-name">${studentName}</span>
+    </div>`;
+
+
+    // Add total attendance percentage
+    const totalPercentage = data.overallattperformance.totalpercentage;
+    const totalPercentageHTML = `<div class="total-percentage">Overall Attendance: ${totalPercentage}%</div>`;
+
+    // Attendance per day
+    let dayHTML = `<div class="box">
+        <div class="box-header">Day-wise Attendance:</div>
+        <table class="attendance-table">
+            <thead>
+                <tr><th>Date</th><th>Sessions</th></tr>
+            </thead>
+            <tbody>`;
+
+    data.attandance.dayobjects.forEach(day => {
+        let sessionHTML = '';
+        Object.keys(day.sessions).forEach(session => {
+            const status = getSessionStatus(day.sessions[session]);
+            sessionHTML += `<td class="circle ${status}">${getSessionIcon(day.sessions[session])}</td>`;
+        });
+        dayHTML += `<tr><td>${day.date}</td>${sessionHTML}</tr>`;
+    });
+
+    dayHTML += `</tbody></table></div>`;
+
+    // Subject-wise attendance
+    let subjectHTML = `<div class="box">
+        <div class="box-header">Subject-wise Attendance:</div>
+        <table class="subject-table">
+            <thead>
+                <tr><th>Subject</th><th>Attendance</th></tr>
+            </thead>
+            <tbody>`;
+
+    data.overallattperformance.overall.forEach(subject => {
+        let percentage = subject.percentage !== '--' ? parseFloat(subject.percentage) : 0;
+        let practical = subject.practical !== '--' ? parseFloat(subject.practical) : 0;
+
+        const totalAttendance = Math.min(percentage + practical, 100);
+        subjectHTML += `<tr>
+            <td>${subject.subjectname}</td>
+            <td>${totalAttendance}%</td>
+        </tr>`;
+    });
+
+    subjectHTML += `</tbody></table></div>`;
+
+    // Display everything
+    resultDiv.innerHTML = studentNameHTML + totalPercentageHTML + dayHTML + subjectHTML;
+}
+
+function getSessionStatus(sessionValue) {
+    if (sessionValue === "1") return 'present';
+    if (sessionValue === "0") return 'absent';
+    return 'nosessions';
+}
+
+function getSessionIcon(sessionValue) {
+    if (sessionValue === "1") return '✔';
+    if (sessionValue === "0") return '✘';
+    return '○';
+}
+
+function checkRollno() {
+    const rollno = document.getElementById('rollno').value;
+    if (rollno.length === 10) {
+        fetchAttendance();
+    }
+}
+
+document.getElementById('rollno').addEventListener('input', checkRollno);
+
+</script>
+
+</body>
+</html>
