@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,15 +7,79 @@
     <title>Attendance Viewer</title>
   
    <style>
-  .home-ui {
-    text-align: center;
+ /* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding: 20px;
-    background-color: #f4f4f9; /* Grey background */
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    margin: 0;
+    background-color: #f4f7fb; /* Lighter background for a cleaner look */
 }
 
+.home-ui {
+    text-align: center;
+    padding: 40px;
+    background-color: #ffffff; /* White background for contrast */
+    border-radius: 15px; /* Round corners for a modern look */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    margin: 40px auto;
+    max-width: 400px; /* Center the container */
+    transition: transform 0.3s ease-in-out; /* Add transition effect */
+}
+
+.home-ui:hover {
+    transform: scale(1.02); /* Slight scale effect on hover */
+}
+
+.welcome-box h2 {
+    font-size: 2.2em;
+    color: #333; /* Dark text for the heading */
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.welcome-box p {
+    font-size: 1.1em;
+    color: #666; /* Soft text color */
+    line-height: 1.5;
+}
+
+.input-box {
+    margin-top: 20px;
+}
+
+.input-box input {
+    padding: 12px 20px;
+    font-size: 1.2em;
+    width: 80%;
+    border-radius: 8px; /* Rounded corners */
+    border: 1px solid #ddd; /* Soft border color */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    outline: none;
+    transition: border 0.3s ease-in-out;
+}
+
+.input-box input:focus {
+    border: 1px solid #007bff; /* Blue border on focus for better visibility */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Focus effect */
+}
+
+.input-box input::placeholder {
+    color: #aaa; /* Lighter placeholder text */
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.9em;
+}
+
+/* Old CSS Updates */
 .welcome-box h2 {
     font-size: 2em;
     color: #333; /* Black text for greeting */
@@ -26,29 +91,40 @@
     color: #666; /* Blackish text */
 }
 
-.input-box input {
-    padding: 10px;
-    font-size: 1.2em;
-    width: 200px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+./* Styling for the Button under the Input Box */
+.input-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Space between input and button */
 }
 
-.input-box button {
-    padding: 10px 20px;
+.view-button {
+    padding: 12px 30px;
     font-size: 1.2em;
-    background-color: #007bff;
+    background-color: #007bff; /* Blue color */
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 70%; /* Makes the button full-width to match the input */
+    max-width: 250px; /* Limits the button width */
 }
 
-.input-box button:hover {
-    background-color: #0056b3;
+.view-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05); /* Slight scale effect */
 }
+
+.view-button:focus {
+    outline: none; /* Removes the focus outline */
+}
+
+.view-button:active {
+    transform: scale(0.98); /* Slightly shrinks on click */
+}
+
 
 /* Add the tomato red color for the name */
 .welcome-box span.name {
@@ -193,7 +269,6 @@ footer a:hover {
     100% { transform: scale(1); }
 }
 
-
 @media (max-width: 600px) {
     .attendance-table td, .subject-table td {
         font-size: 10px;
@@ -204,10 +279,10 @@ footer a:hover {
     }
 
     .attendance-table td.circle {
-        width: 8px;
-        height: 8px;
+        width: 6px;
+        height: 6px;
         font-size: 7px;
-        line-height: 8px;
+        line-height: 6px;
     }
 
     .box {
@@ -215,27 +290,29 @@ footer a:hover {
     }
 }
 
-
-
     </style>
 </head>
 <body>
-    <div id="home-ui" class="home-ui">
-
-        <div class="welcome-box">
-            <h2>NGIT Attendance Viewer</h2>
-            <p>Enter your Parents mobile number</p>
-        </div>
-        <div class="input-box">
-            <input type="text" id="rollno" placeholder="mobile Number" maxlength="10">
-        </div>
+  <div id="home-ui" class="home-ui">
+    <div class="welcome-box">
+        <h2>NGIT Attendance Viewer</h2>
+        <p>Enter your Parents mobile number</p>
     </div>
+    <div class="input-box">
+        <input type="text" id="rollno" placeholder="Mobile Number" maxlength="10">
+      
+        <button class="view-button">Get attendance</button>
+    </div>
+</div>
+
+
+
 
     <div id="attendance-result"></div>
  
 
 	<div id="loading">
-    <span></span> Calculating attendance... please wait! <span></span>
+    <span></span><span></span>
 </div>
 
    <footer>
@@ -253,24 +330,24 @@ async function fetchAttendance() {
         return;
     }
 
-    // Show a funny loading message
+    
     const resultDiv = document.getElementById('attendance-result');
     resultDiv.innerHTML = `<p>Processing data... Just a moment!</p>`;
 
     try {
-        // Fetch attendance data
+        
         const attendanceResponse = await fetch(`https://donalduck969.89determined.workers.dev/?mobile_number=${rollno}`);
         if (!attendanceResponse.ok) throw new Error('Incorrect number, Enter your parents number');
 
         const attendanceData = await attendanceResponse.json();
 
-        // Fetch student name
+       
         const nameResponse = await fetch(`https://nam969.89determined.workers.dev/?mobile_number=${rollno}`);
         if (!nameResponse.ok) throw new Error('Incorrect number, Enter your parents number');
 
         const studentName = await nameResponse.text();
 
-        // Display results
+      
 		document.querySelector('.home-ui').style.display = 'none';
         displayAttendance(attendanceData, studentName.trim());
     } catch (error) {
@@ -281,18 +358,18 @@ async function fetchAttendance() {
 function getGreeting() {
     const hour = new Date().getHours();
     if (hour < 12) return "Good Morning 🌞,";
-    if (hour < 18) return "Good Afternoon ☀,️";
+    if (hour < 18) return "Good Afternoon 🌞,️";
     return "Good Evening 🌃,";
 }
 
 function displayAttendance(data, studentName) {
-    // Hide the home UI
+   
     document.getElementById('home-ui').classList.add('hidden');
 
     const resultDiv = document.getElementById('attendance-result');
     resultDiv.innerHTML = '';
 
-    // Add greeting with student name
+  
     const greeting = getGreeting();
     const studentNameHTML = `
     <div class="total-percentage">
@@ -301,11 +378,10 @@ function displayAttendance(data, studentName) {
     </div>`;
 
 
-    // Add total attendance percentage
     const totalPercentage = data.overallattperformance.totalpercentage;
     const totalPercentageHTML = `<div class="total-percentage">Overall Attendance: ${totalPercentage}%</div>`;
 
-    // Attendance per day
+
     let dayHTML = `<div class="box">
         <div class="box-header">Day-wise Attendance:</div>
         <table class="attendance-table">
@@ -325,7 +401,7 @@ function displayAttendance(data, studentName) {
 
     dayHTML += `</tbody></table></div>`;
 
-    // Subject-wise attendance
+ 
     let subjectHTML = `<div class="box">
         <div class="box-header">Subject-wise Attendance:</div>
         <table class="subject-table">
@@ -347,7 +423,7 @@ function displayAttendance(data, studentName) {
 
     subjectHTML += `</tbody></table></div>`;
 
-    // Display everything
+
     resultDiv.innerHTML = studentNameHTML + totalPercentageHTML + dayHTML + subjectHTML;
 }
 
