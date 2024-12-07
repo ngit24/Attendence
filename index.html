@@ -7,218 +7,95 @@
     <title>Attendance Viewer</title>
   
    <style>
- /* General Styles */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 20px;
     margin: 0;
-    background-color: #f4f7fb; /* Lighter background for a cleaner look */
+    padding: 0;
+    background-color: #121212; /* Deep black background */
+    color: #f4f4f4; /* Light text for contrast */
 }
 
 .home-ui {
-    text-align: center;
-    padding: 40px;
-    background-color: #ffffff; /* White background for contrast */
-    border-radius: 15px; /* Round corners for a modern look */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
-    margin: 40px auto;
-    max-width: 400px; /* Center the container */
-    transition: transform 0.3s ease-in-out; /* Add transition effect */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #1a1a1a; /* Slightly lighter black for contrast */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    border-radius: 20px; /* Smooth, rounded edges */
 }
 
-.home-ui:hover {
-    transform: scale(1.02); /* Slight scale effect on hover */
+
+.welcome-box {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .welcome-box h2 {
-    font-size: 2.2em;
-    color: #333; /* Dark text for the heading */
+    font-size: 2.5em;
     font-weight: bold;
-    margin-bottom: 15px;
+    color: #ff9500; /* Vibrant orange for the heading */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for depth */
 }
 
-.welcome-box p {
-    font-size: 1.1em;
-    color: #666; /* Soft text color */
-    line-height: 1.5;
-}
-
-.input-box {
-    margin-top: 20px;
-}
-
-.input-box input {
-    padding: 12px 20px;
-    font-size: 1.2em;
-    width: 80%;
-    border-radius: 8px; /* Rounded corners */
-    border: 1px solid #ddd; /* Soft border color */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
-    outline: none;
-    transition: border 0.3s ease-in-out;
-}
-
-.input-box input:focus {
-    border: 1px solid #007bff; /* Blue border on focus for better visibility */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Focus effect */
-}
-
-.input-box input::placeholder {
-    color: #aaa; /* Lighter placeholder text */
-}
-
-.footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    font-size: 0.9em;
-}
-
-/* Old CSS Updates */
-.welcome-box h2 {
-    font-size: 2em;
-    color: #333; /* Black text for greeting */
-    margin-bottom: 10px;
-}
-
-.welcome-box p {
-    font-size: 1.2em;
-    color: #666; /* Blackish text */
-}
-
-./* Styling for the Button under the Input Box */
 .input-box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px; /* Space between input and button */
+    gap: 15px;
+    width: 100%;
+}
+
+.input-box input {
+    padding: 12px 20px;
+    font-size: 1.1em;
+    width: 80%;
+    max-width: 350px;
+    border: none;
+    border-radius: 10px;
+    background-color: #292929; /* Dark grey background for input */
+    color: #f4f4f4; /* White text for input */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    outline: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-box input:focus {
+    box-shadow: 0 4px 12px rgba(255, 149, 0, 0.5); /* Orange glow on focus */
+    transform: scale(1.03); /* Slight zoom effect */
+}
+
+.input-box input::placeholder {
+    color: #aaaaaa; /* Lighter grey for placeholder text */
 }
 
 .view-button {
     padding: 12px 30px;
     font-size: 1.2em;
-    background-color: #007bff; /* Blue color */
-    color: white;
+    background-color: #ff9500; /* Vibrant orange for button */
+    color: #ffffff; /* White text for contrast */
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    width: 70%; /* Makes the button full-width to match the input */
-    max-width: 250px; /* Limits the button width */
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    width: 80%;
+    max-width: 350px;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3); /* Orange shadow for depth */
 }
 
 .view-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #e68500; /* Darker orange on hover */
     transform: scale(1.05); /* Slight scale effect */
-}
-
-.view-button:focus {
-    outline: none; /* Removes the focus outline */
+    box-shadow: 0 6px 16px rgba(255, 149, 0, 0.4); /* Stronger shadow */
 }
 
 .view-button:active {
-    transform: scale(0.98); /* Slightly shrinks on click */
-}
-
-
-/* Add the tomato red color for the name */
-.welcome-box span.name {
-    color: tomato; /* Tomato color for the name */
-    font-weight: bold;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    margin: 0;
-    background-color: #f4f4f9; /* Grey background for the entire body */
-}
-
-/* Keeping table styling as before */
-.attendance-table, .subject-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-
-.attendance-table th, .attendance-table td, .subject-table th, .subject-table td {
-    padding: 8px;
-    text-align: center;
-    border: 1px solid #ddd;
-    font-size: 12px;
-}
-
-.attendance-table th, .subject-table th {
-    background-color: #007bff;
-    color: white;
-}
-
-.attendance-table td.present {
-    background-color: #4caf50;
-    color: white;
-}
-
-.attendance-table td.absent {
-    background-color: #f44336;
-    color: white;
-}
-
-.attendance-table td.nosessions {
-    background-color: #9e9e9e;
-    color: white;
-}
-
-.attendance-table td.circle {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 10px;
-    font-size: 7px;
-}
-
-.attendance-table td.circle.present {
-    background-color: #4caf50;
-    color: white;
-}
-
-.attendance-table td.circle.absent {
-    background-color: #f44336;
-    color: white;
-}
-
-.attendance-table td.circle.nosessions {
-    background-color: #9e9e9e;
-    color: white;
-}
-
-.total-percentage {
-    font-weight: bold;
-    font-size: 1.5em;
-    margin-bottom: 20px;
-    text-align: center;
-    color: black; /* Black text for general content */
-}
-
-.student-name {
-    color: tomato; /* Tomato red for student name */
-    font-weight: bold;
-    font-size: 1.5em;
-    text-align: center;
-}
-
-.box-header {
-    font-size: 1.3em;
-    color: #333;
-    margin-bottom: 10px;
-    font-weight: bold;
+    transform: scale(0.98); /* Click effect */
+    background-color: #cc7700; /* Even darker orange */
 }
 
 footer {
@@ -226,84 +103,236 @@ footer {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: #333;
-    color: white;
+    background-color: #1a1a1a; /* Consistent black footer */
+    color: #ff9500; /* Orange text */
     text-align: center;
     padding: 10px 0;
     font-size: 0.9em;
 }
 
 footer a {
-    color: #ff6347; /* Tomato color for name */
-    text-decoration: none; /* Removes underline */
-    font-weight: bold; /* Make name bold */
+    color: white; /* Change the name color to white */
+    text-decoration: none;
+    font-weight: bold;
 }
 
 footer a:hover {
-    color: #ff4500; /* Change color on hover */
+    color: #ff6347; /* You can keep the hover effect color if desired */
 }
-#loading {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5em;
-    color: #333; /* Dark text color */
-    text-align: center;
-    background: rgba(255, 255, 255, 0.8); /* Slight white background */
+footer span {
+    font-weight: bold; /* Make the "Designed by" text bold */
+}
+
+
+/* Attendance Result Section */
+#attendance-result {
+    display: none; /* Initially hide the attendance result */
+    margin: 20px auto;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
-    display: none; /* Hidden by default */
-    transition: opacity 0.3s ease-in-out;
+    background-color: #1a1a1a;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    color: #f4f4f4;
+    max-width: 500px;
+    overflow-x: auto;
 }
 
-#loading span {
-    font-size: 2em; /* Slightly larger emoji */
-    animation: pulse 1.5s infinite;
+
+/* Differentiated Text Colors */
+.student-name {
+    color: #ffffff; /* Bright orange for student name */
+    font-weight: bold;
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+.total-percentage {
+    color: #ff9500; /* Reddish-orange for total percentage */
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
+/* Tables for Attendance */
+.attendance-table, .subject-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto; /* Adjust table layout for better responsiveness */
+    margin-bottom: 20px; /* Space between tables */
+}
+
+.attendance-table th, .subject-table th {
+    background-color: #ff9500; /* Vibrant orange headers */
+    color: #1a1a1a; /* Black text for contrast */
+    font-size: 1em;
+    padding: 10px;
+    text-align: center;
+}
+
+.attendance-table td, .subject-table td {
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9em;
+    border: 1px solid #292929; /* Subtle borders */
+    color: #f4f4f4;
+}
+
+.attendance-table td.present {
+    background-color: #4caf50; /* Green for present */
+    color: white;
+}
+
+.attendance-table td.absent {
+    background-color: #f44336; /* Red for absent */
+    color: white;
+}
+
+.attendance-table td.nosessions {
+    background-color: #9e9e9e; /* Gray for no sessions */
+    color: white;
+}
+
+/* Responsive Circles */
+.attendance-table td.circle {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    vertical-align: middle;
+    line-height: 10px;
+    font-size: 7px;
+}
+
+.attendance-table td.circle.present {
+    background-color: #4caf50;
+}
+
+.attendance-table td.circle.absent {
+    background-color: #f44336;
+}
+
+.attendance-table td.circle.nosessions {
+    background-color: #9e9e9e;
+}
+
+/* Boxes and Headers */
+.box {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #292929; /* Darker box for separation */
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.box-header {
+    font-size: 1.2em;
+    color: #ff9500; /* Orange for section headers */
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Mobile Responsiveness */
 @media (max-width: 600px) {
-    .attendance-table td, .subject-table td {
-        font-size: 10px;
-    }
-
-    .attendance-table th, .subject-table th {
-        font-size: 12px;
+    .attendance-table th, .attendance-table td, .subject-table th, .subject-table td {
+        font-size: 0.8em; /* Smaller font for compact layout */
+        padding: 8px;
     }
 
     .attendance-table td.circle {
-        width: 6px;
-        height: 6px;
-        font-size: 7px;
-        line-height: 6px;
+        width: 8px;
+        height: 8px;
     }
 
     .box {
-        padding: 15px;
+        padding: 10px;
+    }
+
+    .student-name {
+        font-size: 1.2em;
+    }
+
+    .total-percentage {
+        font-size: 1.2em;
+    }
+
+    #attendance-result {
+        width: 95%; /* Utilize more screen space on mobile */
     }
 }
+
+.error-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background */
+    color: #fff;
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+}
+
+.error-popup-content {
+    background-color: #f44336; /* Red background for error */
+    padding: 30px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+}
+
+#error-message {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+#error-popup button {
+    background-color: #fff;
+    color: #f44336;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+#error-popup button:hover {
+    background-color: #ff6347; /* Darker red on hover */
+}
+
+
+
+
 
     </style>
 </head>
 <body>
   <div id="home-ui" class="home-ui">
     <div class="welcome-box">
-        <h2>NGIT Attendance Viewer</h2>
-        <p>Enter your Parents mobile number</p>
+        
+		<h2>Attendance Viewer For NGIT 1st year's</h2>
     </div>
     <div class="input-box">
-        <input type="text" id="rollno" placeholder="Mobile Number" maxlength="10">
-      
-        <button class="view-button">Get attendance</button>
+        <input type="text" id="rollno" placeholder="Enter Parent's Mobile Number" maxlength="10">
+        <button class="view-button">view</button>
     </div>
 </div>
+
+<div id="error-popup" class="error-popup">
+    <div class="error-popup-content">
+        <span id="error-message"></span>
+        <button id="close-popup">Close</button>
+    </div>
+</div>
+
 
 
 
@@ -326,50 +355,51 @@ footer a:hover {
 async function fetchAttendance() {
     const rollno = document.getElementById('rollno').value;
     if (rollno.length !== 10) {
-        alert("Please enter a valid 10-digit Mobile number.");
+        showError("Please enter a valid 10-digit Mobile number.");
         return;
     }
 
-    
     const resultDiv = document.getElementById('attendance-result');
     resultDiv.innerHTML = `<p>Processing data... Just a moment!</p>`;
 
     try {
-        
         const attendanceResponse = await fetch(`https://donalduck969.89determined.workers.dev/?mobile_number=${rollno}`);
         if (!attendanceResponse.ok) throw new Error('Incorrect number, Enter your parents number');
 
         const attendanceData = await attendanceResponse.json();
 
-       
+        if (!attendanceData || typeof attendanceData !== 'object') {
+            throw new Error('Invalid data received, please check the mobile number.');
+        }
+
         const nameResponse = await fetch(`https://nam969.89determined.workers.dev/?mobile_number=${rollno}`);
         if (!nameResponse.ok) throw new Error('Incorrect number, Enter your parents number');
 
         const studentName = await nameResponse.text();
 
-      
-		document.querySelector('.home-ui').style.display = 'none';
+        document.querySelector('.home-ui').style.display = 'none'; // Hide home UI
         displayAttendance(attendanceData, studentName.trim());
     } catch (error) {
-        resultDiv.innerHTML = `<p style="color:red;">${error.message}</p>`;
+        showError(error.message); // Show the error message in popup
     }
 }
 
-function getGreeting() {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good Morning 🌞,";
-    if (hour < 18) return "Good Afternoon 🌞,️";
-    return "Good Evening 🌃,";
+function showError(message) {
+    const errorPopup = document.getElementById('error-popup');
+    const errorMessage = document.getElementById('error-message');
+    errorMessage.textContent = message;
+    errorPopup.style.display = 'block'; // Show error popup
+
+    // Close the popup when the user clicks the close button
+    document.getElementById('close-popup').addEventListener('click', () => {
+        errorPopup.style.display = 'none';
+    });
 }
 
 function displayAttendance(data, studentName) {
-   
-    document.getElementById('home-ui').classList.add('hidden');
-
     const resultDiv = document.getElementById('attendance-result');
-    resultDiv.innerHTML = '';
+    resultDiv.innerHTML = ''; // Clear previous content
 
-  
     const greeting = getGreeting();
     const studentNameHTML = `
     <div class="total-percentage">
@@ -377,10 +407,8 @@ function displayAttendance(data, studentName) {
         <span class="student-name">${studentName}</span>
     </div>`;
 
-
     const totalPercentage = data.overallattperformance.totalpercentage;
     const totalPercentageHTML = `<div class="total-percentage">Overall Attendance: ${totalPercentage}%</div>`;
-
 
     let dayHTML = `<div class="box">
         <div class="box-header">Day-wise Attendance:</div>
@@ -401,7 +429,6 @@ function displayAttendance(data, studentName) {
 
     dayHTML += `</tbody></table></div>`;
 
- 
     let subjectHTML = `<div class="box">
         <div class="box-header">Subject-wise Attendance:</div>
         <table class="subject-table">
@@ -423,8 +450,18 @@ function displayAttendance(data, studentName) {
 
     subjectHTML += `</tbody></table></div>`;
 
-
+    // Now display the result section
     resultDiv.innerHTML = studentNameHTML + totalPercentageHTML + dayHTML + subjectHTML;
+
+    // Show the attendance result section (was hidden before)
+    resultDiv.style.display = 'block';
+}
+
+function getGreeting() {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning 🌞,";
+    if (hour < 18) return "Good Afternoon 🌞,️";
+    return "Good Evening 🌃,";
 }
 
 function getSessionStatus(sessionValue) {
@@ -447,6 +484,8 @@ function checkRollno() {
 }
 
 document.getElementById('rollno').addEventListener('input', checkRollno);
+
+
 
 </script>
 
