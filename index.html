@@ -398,7 +398,7 @@ async function fetchAttendance() {
     document.getElementById('loading').style.display = 'flex';
 
     try {
-        const attendanceResponse = await fetch(`https://fcku.89determined.workers.dev/?mobile_number=${rollno}`);
+        const attendanceResponse = await fetch(`https://donalduck969.89determined.workers.dev/?mobile_number=${rollno}`);
         if (!attendanceResponse.ok) throw new Error('Incorrect number, Enter your parents number');
 
         const attendanceData = await attendanceResponse.json();
