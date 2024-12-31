@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.95, maximum-scale=1.0, user-scalable=no">
+	  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 
     <title>NGIT Attendance Viewer</title>
   
@@ -15,6 +17,48 @@ body {
     background-color: #121212; /* Deep black background */
     color: #f4f4f4; /* Light text for contrast */
 }
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  color: black;
+  width: 80%;
+  max-width: 600px;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: none;
+  text-align: left; /* Center content */
+}
+
+.popup h1 {
+  font-size: 2.5em;
+}
+
+.popup p {
+  font-size: 1.5em;
+  margin-top: 10px;
+  font-style: italic;
+  color: darkorange;
+  text-align: right;
+  font-weight: bold;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 2em;
+  color: black;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+	
+	
 
 .home-ui {
     display: flex;
@@ -345,6 +389,14 @@ footer span {
     </style>
 </head>
 <body>
+<div id="confetti"></div>
+  <div class="popup" id="newYearPopup">
+    <h2>   Wish You a Very Happy New Year 2025! </h2>
+	  
+    <p>-Vardan</p>
+  <span class="close" onclick="closePopup()">×</span> <!-- X mark for closing -->
+  </div>
+  
   <div id="home-ui" class="home-ui">
     <div class="welcome-box">
         
@@ -524,7 +576,34 @@ function checkRollno() {
 
 document.getElementById('rollno').addEventListener('input', checkRollno);
 
+// Show popup
+    const popup = document.getElementById('newYearPopup');
+    popup.style.display = 'block';
 
+    // Close popup function
+    function closePopup() {
+      popup.style.display = 'none';
+    }
+
+    // Confetti animation
+    function launchConfetti() {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    }
+
+    // Launch confetti every second for 5 seconds
+    let count = 0;
+    const interval = setInterval(() => {
+      if (count < 4) {
+        launchConfetti();
+        count++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000);
 
 </script>
 
