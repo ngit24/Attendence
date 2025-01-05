@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.95, maximum-scale=1.0, user-scalable=no">
-	  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 
     <title>NGIT Attendance Viewer</title>
@@ -17,48 +16,171 @@ body {
     background-color: #121212; /* Deep black background */
     color: #f4f4f4; /* Light text for contrast */
 }
+/* Popup Styles */
 .popup {
+  display: none; /* Hidden by default */
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  color: black;
-  width: 80%;
-  max-width: 600px;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9); /* Black background overlay */
   z-index: 1000;
-  display: none;
-  text-align: left; /* Center content */
+  justify-content: center;
+  align-items: center;
 }
 
-.popup h1 {
-  font-size: 2.5em;
+.popup-content {
+  position: relative; /* Add relative positioning to the content */
+  background-color: #121212; /* Black background for the content */
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6);
+  color: #fff; /* White text for the content */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-.popup p {
-  font-size: 1.5em;
-  margin-top: 10px;
-  font-style: italic;
-  color: darkorange;
-  text-align: right;
-  font-weight: bold;
+.popup-heading {
+  font-size: 2.5em; /* Large font size for the main header */
+  color: #ff9500; /* Orange color for the header */
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
 }
 
-.close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 2em;
-  color: black;
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
+.popup-remainder {
+  font-size: 1.4em; /* Slightly smaller text for the "Remainder:" line */
+  color: #ff9500; /* Orange color for the remainder */
+  margin-bottom: 10px;
 }
-	
-	
+
+.popup-days {
+  font-size: 1.4em; /* Slightly smaller text for the days line */
+  color: #fff; /* White text for the "days remaining" */
+  margin-bottom: 20px;
+}
+
+.popup-gif {
+  width: 100%;
+  max-width: 350px;
+  margin: 20px auto;
+  border-radius: 10px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 20px; /* Increase font size for the X */
+    width: 30px; /* Size of the button */
+    height: 30px;
+    padding: 5px;
+    background-color: transparent; /* Transparent background */
+    color: #ff9500; /* Red color for the X */
+    border: none;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #ff1a1a; /* Darker red on hover */
+}
+
+/* FadeIn Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .popup-content {
+    width: 90%; /* Adjust width for smaller screens */
+    padding: 15px; /* Reduce padding for compact view */
+  }
+
+  .popup-heading {
+    font-size: 2em; /* Reduce font size on smaller screens */
+  }
+
+  .popup-remainder, .popup-days {
+    font-size: 1.2em; /* Slightly smaller text for mobile */
+  }
+
+  .close-btn {
+    padding: 8px 16px; /* Adjust button padding */
+  }
+}
+
+@media (max-width: 480px) {
+  .popup-content {
+    width: 85%; /* Further adjust width for very small screens */
+    padding: 10px; /* Further reduce padding */
+  }
+
+  .popup-heading {
+    font-size: 1.7em; /* Even smaller font size */
+  }
+
+  .popup-remainder, .popup-days {
+    font-size: 1em; /* Make text a bit smaller */
+  }
+
+  .close-btn {
+    padding: 6px 18px; /* Adjust button size for very small screens */
+  }
+}
+
+/* Large Screen Adjustments */
+@media (min-width: 1025px) {
+  .popup-content {
+    max-width: 350px; /* Further decrease max width for large screens */
+    padding: 20px; /* Reduce padding slightly for larger screens */
+  }
+
+  .popup-heading {
+    font-size: 2.2em; /* Decrease font size for larger screens */
+  }
+
+  .popup-remainder, .popup-days {
+    font-size: 1.2em; /* Reduce font size for large screens */
+  }
+
+  .close-btn {
+    padding: 8px 16px; /* Adjust button padding */
+  }
+}
+
+@media (min-width: 1200px) {
+  .popup-content {
+    max-width: 300px; /* Decrease max width even further for very large screens */
+    padding: 15px; /* Reduce padding */
+  }
+
+  .popup-heading {
+    font-size: 2em; /* Decrease font size for large screens */
+  }
+
+  .popup-remainder, .popup-days {
+    font-size: 1.1em; /* Reduce font size for large screens */
+  }
+
+  .close-btn {
+    padding: 6px 12px; /* Adjust button size for large screens */
+  }
+}
+
+
+
+
 
 .home-ui {
     display: flex;
@@ -389,13 +511,23 @@ footer span {
     </style>
 </head>
 <body>
-<div id="confetti"></div>
-  <div class="popup" id="newYearPopup">
-    <h2>   Wish You a Very Happy New Year 2025! </h2>
-	  
-    <p>-Vardan</p>
-  <span class="close" onclick="closePopup()">×</span> <!-- X mark for closing -->
+
+<div id="examPopup" class="popup">
+  <div class="popup-content">
+    <button id="closeBtn" class="close-btn">X</button>
+
+    <h2 class="popup-heading">Remainder:</h2>
+    <p class="popup-remainder"></p>
+    <p class="popup-days">Our Final SEM Exams are in <span id="daysRemaining"></span> days!</p>
+	<img class="popup-gif" src="https://media.tenor.com/8yQGBBHCHlcAAAAM/boy-math.gif" alt="Study GIF">
+   
+
   </div>
+</div>
+
+
+
+
   
   <div id="home-ui" class="home-ui">
     <div class="welcome-box">
@@ -576,36 +708,50 @@ function checkRollno() {
 
 document.getElementById('rollno').addEventListener('input', checkRollno);
 
-// Show popup
-    const popup = document.getElementById('newYearPopup');
-    popup.style.display = 'block';
 
-    // Close popup function
-    function closePopup() {
-      popup.style.display = 'none';
-    }
-
-    // Confetti animation
-    function launchConfetti() {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
-    }
-
-    // Launch confetti every second for 5 seconds
-    let count = 0;
-    const interval = setInterval(() => {
-      if (count < 4) {
-        launchConfetti();
-        count++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 1000);
 
 </script>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const examDate = new Date("2025-01-30");  // Adjust the exam date if needed
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Reset the time to midnight to only count full days
+
+  // Calculate time difference and convert to days
+  const timeDifference = examDate - today;
+  let daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+  // Subtract 1 from daysRemaining to exclude the exam day
+  daysRemaining = Math.max(0, daysRemaining - 1);  // Ensure daysRemaining doesn't go below 0
+
+  const popup = document.getElementById("examPopup");
+  const daysRemainingElement = document.getElementById("daysRemaining");
+  const closeBtn = document.querySelector(".close-btn");
+
+  // Insert the remaining days into the heading
+  daysRemainingElement.textContent = daysRemaining;
+
+  // Show the popup
+  popup.style.display = "flex";
+
+  // Close popup on clicking the close button
+  closeBtn.addEventListener("click", function () {
+    popup.style.display = "none";
+  });
+
+  // Close the popup if user clicks anywhere outside the popup content
+  document.addEventListener("click", function (event) {
+    if (!popup.contains(event.target) && event.target !== closeBtn) {
+      popup.style.display = "none";
+    }
+  });
+});
+
+</script>
+
 
 </body>
 </html>
