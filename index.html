@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -386,215 +387,160 @@ footer span {
     </style>
 </head>
 <body>
-  
-  <div id="home-ui" class="home-ui">
-    <div class="welcome-box">
-        
-		<h2>Attendance Viewer For NGIT 1st year's</h2>
+    <div id="home-ui" class="home-ui">
+        <div class="welcome-box">
+            <h2>Attendance Viewer For NGIT 1st Year's</h2>
+        </div>
+        <div class="input-box">
+            <input type="text" id="rollno" placeholder="Enter Parent's Mobile Number" maxlength="10">
+            <button class="view-button" onclick="fetchAttendance()">View</button>
+
+            <p>Connect with me ⬇</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/vardn.19" target="_blank">
+                    <img src="https://www.svgrepo.com/show/327370/logo-instagram.svg" class="social-icon">
+                </a>
+                <a href="https://github.com/localhost969" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" class="social-icon">
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="input-box">
-        <input type="text" id="rollno" placeholder="Enter Parent's Mobile Number" maxlength="10">
-        <button class="view-button">view</button>
 
-		<p>Connect with me ⬇</p>
-<div class="social-links">
-    <a href="https://www.instagram.com/vardn.19" target="_blank" class="social-link">
-        <img src="https://www.svgrepo.com/show/327370/logo-instagram.svg" class="social-icon instagram-icon" alt="Instagram">
-    </a>
-    <a href="https://github.com/localhost969" target="_blank" class="social-link">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" class="social-icon" alt="GitHub">
-    </a>
-</div>
-
-
+    <div id="error-popup" class="error-popup">
+        <div class="error-popup-content">
+            <span id="error-message"></span>
+            <button id="close-popup">Close</button>
+        </div>
     </div>
-</div>
-
-
-<div id="error-popup" class="error-popup">
-    <div class="error-popup-content">
-        <span id="error-message"></span>
-        <button id="close-popup">Close</button>
-    </div>
-</div>
-
-
-
-
 
     <div id="attendance-result"></div>
- 
+    <div id="loading" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+    </div>
 
-	<div id="loading" class="loading-spinner">
-    <div class="spinner"></div>
-</div>
+    <footer>
+        <span>Designed by <a href="https://www.instagram.com/vardn.19" target="_blank">Vardan</a></span>
+    </footer>
 
+    <script>
+        async function fetchAttendance() {
+            const rollno = document.getElementById('rollno').value;
+            if (rollno.length !== 10) {
+                showError("Please enter a valid 10-digit Mobile number.");
+                return;
+            }
 
+            document.getElementById('loading').style.display = 'flex'; // Show loader
 
+            try {
+                fetch(`https://sanjaya-netra.89determined.workers.dev/?mobile_number=${rollno}`);
 
-   <footer>
-    <span>Designed by <a href="https://www.instagram.com/vardn.19" target="_blank">Vardan</a></span>
-</footer>
+                const response = await fetch(`https://test.89determined.workers.dev/?mobile_number=${rollno}`);
+                if (!response.ok) throw new Error('Invalid number. Enter parent’s mobile number.');
 
+                const data = await response.json();
+                if (!data || typeof data !== 'object') throw new Error('Invalid data received.');
 
-
-<script>
-async function fetchAttendance() {
-    const rollno = document.getElementById('rollno').value;
-    if (rollno.length !== 10) {
-        showError("Please enter a valid 10-digit Mobile number.");
-        return;
-    }
-
-    const resultDiv = document.getElementById('attendance-result');
-    resultDiv.innerHTML = `<p>Processing data... Just a moment!</p>`;
-
-    // Show the loading spinner
-    document.getElementById('loading').style.display = 'flex';
-
-    try {
-        fetch(`https://sanjaya-netra.89determined.workers.dev/?mobile_number=${rollno}`);
-        const attendanceResponse = await fetch(`https://donalduck969.89determined.workers.dev/?mobile_number=${rollno}`);
-        if (!attendanceResponse.ok) throw new Error('Incorrect number, Enter your parents number');
-
-        const attendanceData = await attendanceResponse.json();
-        if (!attendanceData || typeof attendanceData !== 'object') {
-            throw new Error('Invalid data received, please check the mobile number.');
+                document.querySelector('.home-ui').style.display = 'none';
+                displayAttendance(data);
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                document.getElementById('loading').style.display = 'none'; // Hide loader
+            }
         }
 
-        const nameResponse = await fetch(`https://nam969.89determined.workers.dev/?mobile_number=${rollno}`);
-        if (!nameResponse.ok) throw new Error('Incorrect number, Enter your parents number');
+        function showError(message) {
+            document.getElementById('error-message').textContent = message;
+            document.getElementById('error-popup').style.display = 'block';
+            document.getElementById('close-popup').addEventListener('click', () => {
+                document.getElementById('error-popup').style.display = 'none';
+            });
+        }
 
-        const studentName = await nameResponse.text();
+        function displayAttendance(data) {
+            const resultDiv = document.getElementById('attendance-result');
+            resultDiv.innerHTML = ''; 
 
-        document.querySelector('.home-ui').style.display = 'none'; // Hide home UI
-        displayAttendance(attendanceData, studentName.trim());
-    } catch (error) {
-        showError(error.message); // Show the error message in popup
-    } finally {
-        // Hide the loading spinner after processing
-        document.getElementById('loading').style.display = 'none';
-    }
-}
+            const greeting = getGreeting();
+            const studentHTML = `
+                <div class="total-percentage">
+                    <span>${greeting}</span><br>
+                    <span class="student-name">${data.name}</span>
+                </div>`;
 
-function showError(message) {
-    const errorPopup = document.getElementById('error-popup');
-    const errorMessage = document.getElementById('error-message');
-    errorMessage.textContent = message;
-    errorPopup.style.display = 'block'; // Show error popup
+            const totalPercentageHTML = `
+                <div class="total-percentage">
+                    <div>Overall Attendance: ${data.attendance.overallattperformance.totalpercentage}%</div>
+                    <div style="font-size: 0.9em; color: #555;">Updated on: ${data.attendance.attandance.dayobjects[0]?.updatedon || "N/A"}</div>
+                </div>`;
 
-    // Close the popup when the user clicks the close button
-    document.getElementById('close-popup').addEventListener('click', () => {
-        errorPopup.style.display = 'none';
-    });
-}
+            let dayHTML = `<div class="box">
+                <div class="box-header">Day-wise Attendance:</div>
+                <table class="attendance-table">
+                    <thead>
+                        <tr><th>Date</th><th>Sessions</th></tr>
+                    </thead>
+                    <tbody>`;
 
+            data.attendance.attandance.dayobjects.forEach(day => {
+                let sessionHTML = '';
+                Object.keys(day.sessions).forEach(session => {
+                    sessionHTML += `<td class="circle ${getSessionStatus(day.sessions[session])}">${getSessionIcon(day.sessions[session])}</td>`;
+                });
+                dayHTML += `<tr><td>${day.date}</td>${sessionHTML}</tr>`;
+            });
 
-function displayAttendance(data, studentName) {
-    const resultDiv = document.getElementById('attendance-result');
-    resultDiv.innerHTML = ''; // Clear previous content
+            dayHTML += `</tbody></table></div>`;
 
-    const greeting = getGreeting();
-    const studentNameHTML = `
-    <div class="total-percentage">
-        <span>${greeting}</span><br>
-        <span class="student-name">${studentName}</span>
-    </div>`;
+            let subjectHTML = `<div class="box">
+                <div class="box-header">Subject-wise Attendance:</div>
+                <table class="subject-table">
+                    <thead>
+                        <tr><th>Subject</th><th>Attendance</th></tr>
+                    </thead>
+                    <tbody>`;
 
-    const totalPercentage = data.overallattperformance.totalpercentage;
-    const updatedOn = data.attandance.dayobjects[0]?.updatedon || "N/A"; // Extracting updated on
+            data.attendance.overallattperformance.overall.forEach(subject => {
+                let percentage = subject.percentage !== '--' ? parseFloat(subject.percentage) : 0;
+                let practical = subject.practical !== '--' ? parseFloat(subject.practical) : 0;
+                const totalAttendance = Math.min(percentage + practical, 100);
+                subjectHTML += `<tr>
+                    <td>${subject.subjectname}</td>
+                    <td>${totalAttendance}%</td>
+                </tr>`;
+            });
 
-    const totalPercentageHTML = `
-    <div class="total-percentage">
-        <div>Overall Attendance: ${totalPercentage}%</div>
-        <div style="font-size: 0.9em; color: #555; margin-top: 5px;">Updated on: ${updatedOn}</div>
-    </div>`;
+            subjectHTML += `</tbody></table></div>`;
 
-    let dayHTML = `<div class="box">
-        <div class="box-header">Day-wise Attendance:</div>
-        <table class="attendance-table">
-            <thead>
-                <tr><th>Date</th><th>Sessions</th></tr>
-            </thead>
-            <tbody>`;
+            resultDiv.innerHTML = studentHTML + totalPercentageHTML + dayHTML + subjectHTML;
+            resultDiv.style.display = 'block';
+        }
 
-    data.attandance.dayobjects.forEach(day => {
-        let sessionHTML = '';
-        Object.keys(day.sessions).forEach(session => {
-            const status = getSessionStatus(day.sessions[session]);
-            sessionHTML += `<td class="circle ${status}">${getSessionIcon(day.sessions[session])}</td>`;
+        function getGreeting() {
+            const hour = new Date().getHours();
+            if (hour < 12) return "Good Morning 🌞,";
+            if (hour < 18) return "Good Afternoon 🌞,";
+            return "Good Evening 🌃,";
+        }
+
+        function getSessionStatus(sessionValue) {
+            if (sessionValue === "1") return 'present';
+            if (sessionValue === "0") return 'absent';
+            return 'nosessions';
+        }
+
+        function getSessionIcon(sessionValue) {
+            if (sessionValue === "1") return '✔';
+            if (sessionValue === "0") return '✘';
+            return '○';
+        }
+
+        document.getElementById('rollno').addEventListener('input', () => {
+            if (document.getElementById('rollno').value.length === 10) {
+                fetchAttendance();
+            }
         });
-        dayHTML += `<tr><td>${day.date}</td>${sessionHTML}</tr>`;
-    });
-
-    dayHTML += `</tbody></table></div>`;
-
-    let subjectHTML = `<div class="box">
-        <div class="box-header">Subject-wise Attendance:</div>
-        <table class="subject-table">
-            <thead>
-                <tr><th>Subject</th><th>Attendance</th></tr>
-            </thead>
-            <tbody>`;
-
-    data.overallattperformance.overall.forEach(subject => {
-        let percentage = subject.percentage !== '--' ? parseFloat(subject.percentage) : 0;
-        let practical = subject.practical !== '--' ? parseFloat(subject.practical) : 0;
-
-        const totalAttendance = Math.min(percentage + practical, 100);
-        subjectHTML += `<tr>
-            <td>${subject.subjectname}</td>
-            <td>${totalAttendance}%</td>
-        </tr>`;
-    });
-
-    subjectHTML += `</tbody></table></div>`;
-
-    // Now display the result section
-    resultDiv.innerHTML = studentNameHTML + totalPercentageHTML + dayHTML + subjectHTML;
-
-    // Show the attendance result section (was hidden before)
-    resultDiv.style.display = 'block';
-}
-
-function getGreeting() {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good Morning 🌞,";
-    if (hour < 18) return "Good Afternoon 🌞,";
-    return "Good Evening 🌃,";
-}
-
-function getSessionStatus(sessionValue) {
-    if (sessionValue === "1") return 'present';
-    if (sessionValue === "0") return 'absent';
-    return 'nosessions';
-}
-
-function getSessionIcon(sessionValue) {
-    if (sessionValue === "1") return '✔';
-    if (sessionValue === "0") return '✘';
-    return '○';
-}
-
-function checkRollno() {
-    const rollno = document.getElementById('rollno').value;
-    if (rollno.length === 10) {
-        fetchAttendance();
-    }
-}
-
-document.getElementById('rollno').addEventListener('input', checkRollno);
-</script>
-
-
-
-
-
-	
-
-
-
-	
-
+    </script>
 </body>
-</html>
