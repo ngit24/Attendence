@@ -1,546 +1,731 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.95, maximum-scale=1.0, user-scalable=no">
-   
-    <title>NGIT Attendance Viewer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NGIT Student Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
   
-   <style>
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ <style>
+  /* General Reset */
+  * {
     margin: 0;
     padding: 0;
-    background-color: #121212; /* Deep black background */
-    color: #f4f4f4; /* Light text for contrast */
-}
+    box-sizing: border-box;
+  }
 
-.home-ui {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 80vh;
-    padding: 20px;
-    background-color: #1a1a1a; /* Slightly lighter black for contrast */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-    border-radius: 20px; /* Smooth, rounded edges */
-}
-p {
-  font-family: 'Courier New', monospace;
-  text-align: center; /* Center the text */
-    font-size: 18px; /* Adjust font size as needed */
-   margin-top: 15px;
-}
+  /* Import stylish fonts */
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Poppins:wght@300;400;600&display=swap');
 
-.social-links {
-    
-    display: flex;
-    justify-content: center; /* Center the items horizontally */
-    gap: 15px;
-}
-
-.social-link {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    background-color: #292929; /* Background color for the icons */
-    border-radius: 50%; /* Make it circular */
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #ff9a00, #ffffff); /* Orange to white gradient */
+    color: #333;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
-    transition: transform 0.3s ease;
-}
-
-.social-link:hover {
-    transform: scale(1.1); /* Hover effect */
-}
-
-.social-icon {
-    width: 25px; /* Icon size */
-    height: 25px;
-    object-fit: contain;
-    filter: invert(1); /* Invert icon colors for contrast on dark background */
-}
-
-.instagram-icon {
-    filter: invert(1); /* Remove color inversion for the Instagram icon */
-}
-
-
-
-.welcome-box {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.welcome-box h2 {
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #ff9500; /* Vibrant orange for the heading */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for depth */
-}
-
-.input-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    width: 100%;
-}
-
-.input-box input {
-    padding: 12px 20px;
-    font-size: 1.1em;
-    width: 80%;
-    max-width: 350px;
-    border: none;
-    border-radius: 10px;
-    background-color: #292929; /* Dark grey background for input */
-    color: #f4f4f4; /* White text for input */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
-    outline: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.input-box input:focus {
-    box-shadow: 0 4px 12px rgba(255, 149, 0, 0.5); /* Orange glow on focus */
-    transform: scale(1.03); /* Slight zoom effect */
-}
-
-.input-box input::placeholder {
-    color: #aaaaaa; /* Lighter grey for placeholder text */
-}
-
-.view-button {
-    padding: 12px 30px;
-    font-size: 1.2em;
-    background-color: #ff9500; /* Vibrant orange for button */
-    color: #ffffff; /* White text for contrast */
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-    width: 80%;
-    max-width: 350px;
-    text-transform: uppercase;
-    font-weight: bold;
-    box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3); /* Orange shadow for depth */
-}
-
-.view-button:hover {
-    background-color: #e68500; /* Darker orange on hover */
-    transform: scale(1.05); /* Slight scale effect */
-    box-shadow: 0 6px 16px rgba(255, 149, 0, 0.4); /* Stronger shadow */
-}
-
-.view-button:active {
-    transform: scale(0.98); /* Click effect */
-    background-color: #cc7700; /* Even darker orange */
-}
-
-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #1a1a1a; /* Consistent black footer */
-    color: #ff9500; /* Orange text */
-    text-align: center;
-    padding: 10px 0;
-    font-size: 1.1em;
-}
-
-footer a {
-    color: white; /* Change the name color to white */
-    text-decoration: none;
-    font-weight: bold;
-}
-
-footer a:hover {
-    color: #ff6347; /* You can keep the hover effect color if desired */
-}
-footer span {
-    font-weight: bold; /* Make the "Designed by" text bold */
-}
-
-
-/* Attendance Result Section */
-#attendance-result {
-    display: none; /* Initially hide the attendance result */
-    margin: 20px auto;
     padding: 20px;
-    background-color: #1a1a1a;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    color: #f4f4f4;
-    max-width: 500px;
-    overflow-x: auto;
-}
+  }
 
-
-/* Differentiated Text Colors */
-.student-name {
-    color: #ffffff; 
-    font-weight: bold;
-    font-size: 1.5em;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.total-percentage {
-    color: #ff9500; /* Reddish-orange for total percentage */
-    font-weight: bold;
-    font-size: 1.5em;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-/* Tables for Attendance */
-.attendance-table, .subject-table {
+  .dashboard {
     width: 100%;
-    border-collapse: collapse;
-    table-layout: auto; /* Adjust table layout for better responsiveness */
-    margin-bottom: 20px; /* Space between tables */
-}
-
-.attendance-table th, .subject-table th {
-    background-color: #ff9500; /* Vibrant orange headers */
-    color: #1a1a1a; /* Black text for contrast */
-    font-size: 1em;
-    padding: 10px;
-    text-align: center;
-}
-
-.attendance-table td, .subject-table td {
-    text-align: center;
-    padding: 10px;
-    font-size: 0.9em;
-    border: 1px solid #292929; /* Subtle borders */
-    color: #f4f4f4;
-}
-
-.attendance-table td.present {
-    background-color: #4caf50; /* Green for present */
-    color: white;
-}
-
-.attendance-table td.absent {
-    background-color: #f44336; /* Red for absent */
-    color: white;
-}
-
-.attendance-table td.nosessions {
-    background-color: #9e9e9e; /* Gray for no sessions */
-    color: white;
-}
-
-/* Responsive Circles */
-.attendance-table td.circle {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    vertical-align: middle;
-    line-height: 10px;
-    font-size: 7px;
-}
-
-.attendance-table td.circle.present {
-    background-color: #4caf50;
-}
-
-.attendance-table td.circle.absent {
-    background-color: #f44336;
-}
-
-.attendance-table td.circle.nosessions {
-    background-color: #9e9e9e;
-}
-
-/* Boxes and Headers */
-.box {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #292929; /* Darker box for separation */
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-}
-
-.box-header {
-    font-size: 1.2em;
-    color: #ff9500; /* Orange for section headers */
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 600px) {
-    .attendance-table th, .attendance-table td, .subject-table th, .subject-table td {
-        font-size: 0.8em; /* Smaller font for compact layout */
-        padding: 8px;
-    }
-
-    .attendance-table td.circle {
-        width: 8px;
-        height: 8px;
-    }
-
-    .box {
-        padding: 10px;
-    }
-
-    .student-name {
-        font-size: 1.2em;
-    }
-
-    .total-percentage {
-        font-size: 1.2em;
-    }
-
-    #attendance-result {
-        width: 95%; /* Utilize more screen space on mobile */
-    }
-}
-
-.error-popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Dark background */
-    color: #fff;
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    padding: 20px;
-}
-
-.error-popup-content {
-    background-color: #f44336; /* Red background for error */
+    max-width: 1200px;
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
     padding: 30px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    margin-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header {
     text-align: center;
-}
+    margin-bottom: 30px;
+  }
 
-#error-message {
-    font-size: 1.5em;
-    margin-bottom: 20px;
-}
+  .header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ff6b00; /* Orange accent */
+    font-family: 'Poppins', sans-serif;
+  }
 
-#error-popup button {
-    background-color: #fff;
-    color: #f44336;
+  .header p {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .input-section {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .input-section input {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px;
+    border: 2px solid #ff6b00; /* Orange border */
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+    color: #333;
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+
+  .input-section button {
+    padding: 12px 24px;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 10px;
+    background: #ff6b00; /* Orange */
+    color: #fff;
+    font-size: 1rem;
     cursor: pointer;
-    font-weight: bold;
-    font-size: 1.1em;
-}
+    transition: background 0.3s ease;
+  }
 
-#error-popup button:hover {
-    background-color: #ff6347; /* Darker red on hover */
-}
+  .input-section button:hover {
+    background: #e65c00; /* Darker orange on hover */
+  }
 
-/* Loader Styles */
-.loading-spinner {
+  .data-section {
+    display: none;
+  }
+
+  .greeting-card {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .greeting-card h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #ff6b00; /* Orange accent */
+  }
+
+  .percentage-circle {
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ff6b00; /* Orange accent */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .daywise-attendance,
+  .subject-wise-attendance,
+  .overall-attendance {
+    margin-bottom: 30px;
+  }
+
+  .daywise-attendance h3,
+  .subject-wise-attendance h3,
+  .overall-attendance h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #ff6b00; /* Orange accent */
+  }
+
+  .day-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+  }
+
+  .day-card {
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .day-card h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .chart-container {
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .session-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    margin: 5px;
+    text-align: center;
+  }
+
+  .session-badge.present {
+    background: #4caf50; /* Green for present */
+    color: white;
+  }
+
+  .session-badge.absent {
+    background: #f44336; /* Red for absent */
+    color: white;
+  }
+
+  .session-badge.not-taken {
+    background: #9e9e9e; /* Gray for not taken */
+    color: white;
+  }
+
+  .session-badge i {
+    margin-right: 5px;
+  }
+
+  /* Circles for session status */
+  .session-circle {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 5px;
+  }
+
+  .session-circle.present {
+    background: #4caf50; /* Green for present */
+  }
+
+  .session-circle.absent {
+    background: #f44336; /* Red for absent */
+  }
+
+  .session-circle.not-taken {
+    background: #9e9e9e; /* Gray for not taken */
+  }
+
+  .session-circle.present::before {
+    content: '✔';
+    color: white;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .session-circle.absent::before {
+    content: '✘';
+    color: white;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .session-circle.not-taken::before {
+    content: '';
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .legend-item .circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+  }
+
+  .legend-item .present {
+    background: #4caf50; /* Green for present */
+  }
+
+  .legend-item .absent {
+    background: #f44336; /* Red for absent */
+  }
+
+  .legend-item .not-taken {
+    background: #9e9e9e; /* Gray for not taken */
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .loader {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
     display: none; /* Initially hidden */
     justify-content: center;
     align-items: center;
-    z-index: 9999;
-}
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1001;
+  }
 
-.spinner {
-    border: 10px solid #f3f3f3;
-    border-top: 10px solid #ff9500; /* Orange color */
-    border-radius: 50%;
+  .loader::before {
+    content: "";
     width: 50px;
     height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-top: 5px solid #fff;
+    border-radius: 50%;
     animation: spin 1s linear infinite;
-}
+  }
 
-@keyframes spin {
+  @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+  }
+
+  @keyframes l2 {
+    to {
+      background-size: 100% 3px;
+    }
+  }
+
+ /* Footer styles */
+footer {
+  border-radius: 10px;
+  padding: 20px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: #333;
+  z-index: 1000;
+  
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
+footer p {
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 400; /* Regular weight for normal text */
+}
+
+footer a {
+  color: #6a11cb;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #2575fc; /* Change color on hover */
+  text-decoration: underline;
+}
+
+footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+footer ul li {
+  display: inline;
+}
+
+/* Gradient text effect for the name */
+.gradient-text {
+  background: linear-gradient(90deg, #ff6b00, #ff9a00); /* Orange gradient */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+  font-family: "Lucida Console", "Courier New", monospace;
+  font-size: 1.2em; /* Slightly larger text */
+  animation: gradient-shift 3s infinite alternate; /* Optional: Add animation */
+}
+
+/* Optional: Gradient animation */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+  /* Popup styles */
+  .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1002;
+    display: none;
+  }
+
+  .popup h3 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .popup button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #ff6b00; /* Orange */
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .popup button:hover {
+    background: #e65c00; /* Darker orange on hover */
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .header h1 {
+      font-size: 2rem;
+    }
+
+    .header p {
+      font-size: 0.9rem;
+    }
+
+    .input-section input {
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+
+    .input-section button {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+    }
+
+    .greeting-card h2 {
+      font-size: 1.5rem;
+    }
+
+    .percentage-circle {
+      width: 120px;
+      height: 120px;
+      font-size: 1.5rem;
+    }
+
+    .day-cards {
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .day-card {
+      padding: 10px;
+    }
+
+    .day-card h4 {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .dashboard {
+      padding: 20px;
+    }
+
+    .day-cards {
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 8px;
+    }
+
+    .day-card {
+      padding: 8px;
+    }
+  }
+  .additional-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center; /* Center the buttons */
+  margin-top: 15%; /* Reduce spacing for better positioning */
+}
+
+.button, .cie-button, .sem-button {
+    padding: 5px 24px;
+    border: none;
+    border-radius: 10px;
+    color: #ff6b00;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+.button:hover, .cie-button:hover, .sem-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #e66b00, #ff9400);
+}
+
+.button:active, .cie-button:active, .sem-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.button i {
+  margin-right: 10px;
+  font-size: 1.2rem; /* Slightly larger icons */
+}
+
+</style>
+</head>
+
+<body>
+  <div class="dashboard">
+    <!-- Header -->
+    <header class="header">
+      <h1>NGIT Student Portal</h1>
+      <p>Track your attendance & Exam results with ease</p>
+    </header>
+
+    <!-- Input Section -->
+   <div class="input-section">
+  <form id="attendanceForm">
+    <input type="text" id="parentNumber" placeholder="Enter Your Parent's Number" required maxlength="10">
+    <button type="submit"><i class="fas fa-search"></i> Get Attendance</button>
+  </form>
+
+  <!-- New Buttons -->
+  <div class="additional-buttons">
+
+    <a href="https://ngit24.me/cie.html" class="button cie-button">
+      <i class="fas fa-chart-line"></i> Check CIE Marks
+    </a>
+    <a href="https://ngit24.me/sem.html" class="button sem-button">
+      <i class="fas fa-chart-bar"></i> Check SEM Results
+    </a>
+	<a href="https://ngit24.github.io/pyq/" class="button pyqs-button">
+      <i class="fas fa-book"></i> Get PYQS
+    </a>
+  </div>
+</div>
+
+    <!-- Data Display Section -->
+    <div id="attendanceData" class="data-section">
+      <!-- Greeting and Total Percentage -->
+      <div class="greeting-card">
+        <h2 id="studentName">Hello, stranger !</h2>
+        <div class="percentage-circle">
+          <span id="totalPercentage">91.10%</span>
+        </div>
+        <p id="updatedOn">Last Updated: Sat 15 Feb at 01:45 AM</p>
+      </div>
+
+      <!-- Day-wise Attendance -->
+     <div class="daywise-attendance">
+  <h3>Day-wise Attendance</h3>
+  <div class="day-card">
+    <div id="daywiseAttendance" class="sessions-grid"></div>
+  </div>
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item">
+      <span class="circle present"></span> Present
+    </div>
+    <div class="legend-item">
+      <span class="circle absent"></span> Absent
+    </div>
+    <div class="legend-item">
+      <span class="circle not-taken"></span> Not Taken
+    </div>
+  </div>
+</div>
+
+<div class="subject-wise-attendance">
+  <h3>Subject-wise Attendance</h3>
+  <div class="chart-container">
+    <canvas id="subjectChart"></canvas>
+  </div>
+</div>
+
+
+      
+    </div>
+  </div>
+
+  <div class="loader"></div>
+
+  <div class="popup" id="popup">
+    <h3>Warning</h3>
+    <p>Incorrect number, try only your parent's number.</p>
+    <button id="closePopup">Close</button>
+  </div>
+
+  <footer class="footer">
+  <p>Designed by <span class="gradient-text">Vardan</span></p>
+</footer>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+   
+
+    document.getElementById('attendanceForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const parentNumber = document.getElementById('parentNumber').value.trim();
+        
+
+        if (!parentNumber) {
+    const input = document.getElementById('parentNumber');
+    input.style.border = '2px solid red';
+    gsap.to(input, { x: -10, duration: 0.1, repeat: 5, yoyo: true });
+    return;
 }
 
 
+        // Show loader and reset previous data
+        document.querySelector('.loader').style.display = 'flex';
+        document.getElementById('attendanceData').style.display = 'none';
+
+        try {
+            const response = await fetch(`https://test.89determined.workers.dev/?mobile_number=${parentNumber}`);
+            const data = await response.json();
+
+            // Hide loader
+            document.querySelector('.loader').style.display = 'none';
+
+            // Hide input section and header smoothly
+            document.querySelector('.input-section').classList.add('hidden');
+            document.querySelector('.header').classList.add('hidden');
+
+            // Display fetched attendance data
+            displayAttendanceData(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            alert('Incorrect number, try only your parents number.');
+            document.querySelector('.loader').style.display = 'none'; // Hide loader on error
+        }
+    });
+});
 
 
+function displayAttendanceData(data) {
+    const attendanceDataDiv = document.getElementById('attendanceData');
+    attendanceDataDiv.style.display = 'block';
 
+    // Animate data display
+    gsap.from(attendanceDataDiv, { opacity: 0, y: 50, duration: 1 });
 
-    </style>
-</head>
-<body>
-    <div id="home-ui" class="home-ui">
-        <div class="welcome-box">
-            <h2>Attendance Viewer For NGIT 1st Year's</h2>
-        </div>
-        <div class="input-box">
-            <input type="text" id="rollno" placeholder="Enter Parent's Mobile Number" maxlength="10">
-            <button class="view-button" onclick="fetchAttendance()">View</button>
+    // Display student name
+    document.getElementById('studentName').textContent = `Hello, ${data.name}!`;
 
-            <p>Connect with me ⬇</p>
-            <div class="social-links">
-                <a href="https://www.instagram.com/vardn.19" target="_blank">
-                    <img src="https://www.svgrepo.com/show/327370/logo-instagram.svg" class="social-icon">
-                </a>
-                <a href="https://github.com/localhost969" target="_blank">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" class="social-icon">
-                </a>
+    // Display total attendance percentage
+    const totalPercentage = data.attendance.overallattperformance.totalpercentage;
+    document.getElementById('totalPercentage').textContent = `${totalPercentage}%`;
+
+    // Display last updated date
+    const updatedOn = data.attendance.attandance.dayobjects[0].updatedon;
+    document.getElementById('updatedOn').textContent = `Last Updated: ${updatedOn}`;
+
+    // Render day-wise attendance
+    const daywiseAttendanceDiv = document.getElementById('daywiseAttendance');
+    daywiseAttendanceDiv.innerHTML = '';
+    data.attendance.attandance.dayobjects.forEach(day => {
+        const dayItem = document.createElement('div');
+        dayItem.className = 'session-item';
+        dayItem.innerHTML = `
+            <h5>${day.day || day.date}</h5>
+            <div class="session-circles">
+                ${Object.entries(day.sessions).map(([session, status]) => `
+                    <div class="session-circle ${getSessionClass(status)}" title="${session}: ${getSessionText(status)}"></div>
+                `).join('')}
             </div>
-        </div>
-    </div>
+        `;
+        daywiseAttendanceDiv.appendChild(dayItem);
+    });
 
-    <div id="error-popup" class="error-popup">
-        <div class="error-popup-content">
-            <span id="error-message"></span>
-            <button id="close-popup">Close</button>
-        </div>
-    </div>
+    // Render subject-wise attendance chart
+    renderSubjectChart(data.attendance.overallattperformance.overall);
+}
 
-    <div id="attendance-result"></div>
-    <div id="loading" class="loading-spinner" style="display: none;">
-        <div class="spinner"></div>
-    </div>
+// Function to render subject-wise attendance using Chart.js
+function renderSubjectChart(subjectsData) {
+    const subjects = subjectsData.map(subject => subject.subjectname);
+    const attendanceValues = subjectsData.map(subject => {
+        return subject.percentage !== "--" ? parseFloat(subject.percentage) : 
+               subject.practical !== "--" ? parseFloat(subject.practical) : 0;
+    });
 
-    <footer>
-        <span>Designed by <a href="https://www.instagram.com/vardn.19" target="_blank">Vardan</a></span>
-    </footer>
+    // Destroy previous chart instance if exists
+    const existingChart = Chart.getChart("subjectChart");
+    if (existingChart) {
+        existingChart.destroy();
+    }
 
-    <script>
-        async function fetchAttendance() {
-            const rollno = document.getElementById('rollno').value;
-            if (rollno.length !== 10) {
-                showError("Please enter a valid 10-digit Mobile number.");
-                return;
-            }
-
-            document.getElementById('loading').style.display = 'flex'; // Show loader
-
-            try {
-                fetch(`https://sanjaya-netra.89determined.workers.dev/?mobile_number=${rollno}`);
-
-                const response = await fetch(`https://test.89determined.workers.dev/?mobile_number=${rollno}`);
-                if (!response.ok) throw new Error('Invalid number. Enter parent’s mobile number.');
-
-                const data = await response.json();
-                if (!data || typeof data !== 'object') throw new Error('Invalid data received.');
-
-                document.querySelector('.home-ui').style.display = 'none';
-                displayAttendance(data);
-            } catch (error) {
-                showError(error.message);
-            } finally {
-                document.getElementById('loading').style.display = 'none'; // Hide loader
+    // Create new chart
+    const ctx = document.getElementById('subjectChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: subjects,
+            datasets: [{
+                label: 'Attendance Percentage',
+                data: attendanceValues,
+                backgroundColor: 'transparent',
+                borderColor: '#00f7ff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
             }
         }
+    });
+}
 
-        function showError(message) {
-            document.getElementById('error-message').textContent = message;
-            document.getElementById('error-popup').style.display = 'block';
-            document.getElementById('close-popup').addEventListener('click', () => {
-                document.getElementById('error-popup').style.display = 'none';
-            });
-        }
+// Helper functions for session status
+function getSessionClass(status) {
+    switch (status) {
+        case '1': return 'present';
+        case '0': return 'absent';
+        case '2': return 'not-taken';
+        default: return '';
+    }
+}
 
-        function displayAttendance(data) {
-            const resultDiv = document.getElementById('attendance-result');
-            resultDiv.innerHTML = ''; 
+function getSessionText(status) {
+    switch (status) {
+        case '1': return 'Present';
+        case '0': return 'Absent';
+        case '2': return 'Not Taken';
+        default: return '';
+    }
+}
 
-            const greeting = getGreeting();
-            const studentHTML = `
-                <div class="total-percentage">
-                    <span>${greeting}</span><br>
-                    <span class="student-name">${data.name}</span>
-                </div>`;
 
-            const totalPercentageHTML = `
-                <div class="total-percentage">
-                    <div>Overall Attendance: ${data.attendance.overallattperformance.totalpercentage}%</div>
-                    <div style="font-size: 0.9em; color: #555;">Updated on: ${data.attendance.attandance.dayobjects[0]?.updatedon || "N/A"}</div>
-                </div>`;
-
-            let dayHTML = `<div class="box">
-                <div class="box-header">Day-wise Attendance:</div>
-                <table class="attendance-table">
-                    <thead>
-                        <tr><th>Date</th><th>Sessions</th></tr>
-                    </thead>
-                    <tbody>`;
-
-            data.attendance.attandance.dayobjects.forEach(day => {
-                let sessionHTML = '';
-                Object.keys(day.sessions).forEach(session => {
-                    sessionHTML += `<td class="circle ${getSessionStatus(day.sessions[session])}">${getSessionIcon(day.sessions[session])}</td>`;
-                });
-                dayHTML += `<tr><td>${day.date}</td>${sessionHTML}</tr>`;
-            });
-
-            dayHTML += `</tbody></table></div>`;
-
-            let subjectHTML = `<div class="box">
-                <div class="box-header">Subject-wise Attendance:</div>
-                <table class="subject-table">
-                    <thead>
-                        <tr><th>Subject</th><th>Attendance</th></tr>
-                    </thead>
-                    <tbody>`;
-
-            data.attendance.overallattperformance.overall.forEach(subject => {
-                let percentage = subject.percentage !== '--' ? parseFloat(subject.percentage) : 0;
-                let practical = subject.practical !== '--' ? parseFloat(subject.practical) : 0;
-                const totalAttendance = Math.min(percentage + practical, 100);
-                subjectHTML += `<tr>
-                    <td>${subject.subjectname}</td>
-                    <td>${totalAttendance}%</td>
-                </tr>`;
-            });
-
-            subjectHTML += `</tbody></table></div>`;
-
-            resultDiv.innerHTML = studentHTML + totalPercentageHTML + dayHTML + subjectHTML;
-            resultDiv.style.display = 'block';
-        }
-
-        function getGreeting() {
-            const hour = new Date().getHours();
-            if (hour < 12) return "Good Morning 🌞,";
-            if (hour < 18) return "Good Afternoon 🌞,";
-            return "Good Evening 🌃,";
-        }
-
-        function getSessionStatus(sessionValue) {
-            if (sessionValue === "1") return 'present';
-            if (sessionValue === "0") return 'absent';
-            return 'nosessions';
-        }
-
-        function getSessionIcon(sessionValue) {
-            if (sessionValue === "1") return '✔';
-            if (sessionValue === "0") return '✘';
-            return '○';
-        }
-
-        document.getElementById('rollno').addEventListener('input', () => {
-            if (document.getElementById('rollno').value.length === 10) {
-                fetchAttendance();
-            }
-        });
-    </script>
+  </script>
 </body>
+</html>
