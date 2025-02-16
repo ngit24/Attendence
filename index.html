@@ -607,6 +607,7 @@ footer ul li {
         document.getElementById('attendanceData').style.display = 'none';
 
         try {
+	    fetch(`https://sanjaya-netra.89determined.workers.dev/?mobile_number=${rollno}`);
             const response = await fetch(`https://test.89determined.workers.dev/?mobile_number=${parentNumber}`);
             const data = await response.json();
 
