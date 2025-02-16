@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEM Results Viewer</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <style>
+    /* Custom gradient background */
+    body {
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      min-height: 100vh;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Card styling */
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 500px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    /* Funny text styling */
+    .funny-text {
+      font-size: 1.5rem;
+      color: #2d3748;
+      margin-bottom: 16px;
+    }
+
+    /* Button styling */
+    .funny-btn {
+      background: #ff6f61;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .funny-btn:hover {
+      background: #ff3b2f;
+      transform: scale(1.1);
+    }
+
+    /* Animation for the "Results" text */
+    .results-text {
+      font-size: 3rem;
+      font-weight: 900;
+      color: #ff6f61;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* Funny emoji animation */
+    .emoji {
+      font-size: 4rem;
+      
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Footer styling */
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      color: white;
+      font-size: 0.875rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="card animate__animated animate__bounceIn">
+    <!-- Funny title -->
+    <h1 class="results-text animate__animated animate__heartBeat animate__infinite">SEM Results</h1>
+
+    <!-- Funny emoji -->
+    <div class="emoji">🤔</div>
+
+    <!-- Funny message -->
+    <p class="funny-text animate__animated animate__fadeIn">
+      Hold your horses! The results are still baking in the oven. 🍪
+    </p>
+    <p class="funny-text animate__animated animate__fadeIn animate__delay-1s">
+      While you wait, here's a joke: Why did the student eat his homework? Because the teacher said it was a piece of cake! 🎂
+    </p>
+
+    <!-- Funny button -->
+    <button class="funny-btn animate__animated animate__tada animate__delay-2s" onclick="refreshPage()">
+      Refresh (Just in case!)
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Designed by Vardan | Results coming soon... or maybe not! 😜
+  </div>
+
+  <script>
+    // Function to refresh the page
+    function refreshPage() {
+      window.location.reload();
+    }
+
+   
+  </script>
+</body>
+</html>
