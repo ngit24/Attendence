@@ -3,102 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CIE Marks Viewer</title>
+  <title>CIE Marks Viewer - Sign In</title>
+  <!-- Include a professional Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- TailwindCSS for utility classes -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
-    /* Custom gradient background */
+    /* Global Styles with Orange Gradient Background */
     body {
-      background: linear-gradient(135deg, #6a11cb, rgba(0, 0, 0, 0.05));
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #ff9a00ad, #ff6f0047);
       min-height: 100vh;
-      font-family: "Lucida Console", "Courier New", monospace;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    /* Smooth transitions */
-    .smooth-transition {
-      transition: all 0.3s ease-in-out;
-    }
-
-    /* Card styling */
+    /* Card Container positioned 20% from bottom (i.e. 80% up from bottom) */
     .card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+      max-width: 420px;
       width: 100%;
-      max-width: 500px;
-      padding: 24px;
-    }
-
-    /* Compact table styling */
-    .marks-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px; /* Smaller font size for compactness */
-    }
-
-    .marks-table th,
-    .marks-table td {
-      padding: 8px; /* Reduced padding for compactness */
+      padding: 32px;
       text-align: center;
-      border-bottom: 1px solid #e2e8f0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
-    .marks-table th {
-      background: #6a11cb;
-      color: white;
-      font-weight: 600;
+    /* Fade out effect */
+    .fade-out {
+      opacity: 0;
+      transform: translateY(-20px);
+      pointer-events: none;
     }
 
-    .marks-table tr:hover {
-      background: #f8f9fa;
+    /* Headings */
+    .card h1 {
+      font-size: 1.75rem;
+      color: #333333;
+      margin-bottom: 1rem;
     }
 
-    .marks-table tr:last-child td {
-      border-bottom: none;
+    /* Subheading */
+    .card p {
+      color: #555555;
+      margin-bottom: 1rem;
     }
 
-    /* Input styling */
+    /* Form Styles */
+    .card form {
+      margin-top: 1rem;
+    }
+
     .input-field {
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
+      border: 1px solid #dcdfe6;
+      border-radius: 6px;
       padding: 12px;
       width: 100%;
+      margin-bottom: 1rem;
       transition: border-color 0.3s ease;
     }
 
     .input-field:focus {
+      border-color: #ff6f00;
       outline: none;
-      border-color: #6a11cb;
-      box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.2);
+      box-shadow: 0 0 0 3px rgba(255, 111, 0, 0.3);
     }
 
-    /* Button styling */
     .submit-btn {
-      background: #6a11cb;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: 600;
-      transition: background 0.3s ease;
+      background: #ff6f00;
+      color: #fff;
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      width: 100%;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .submit-btn:hover {
-      background: #2575fc;
+      background: #e65c00;
     }
 
-    /* Loading spinner */
+    /* Loading Spinner */
     .loading-spinner {
-      border: 4px solid rgba(255, 255, 255, 0.3);
-      border-top: 4px solid #6a11cb;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid #fff;
       border-radius: 50%;
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       animation: spin 1s linear infinite;
+      margin-left: 0.5rem;
     }
 
     @keyframes spin {
@@ -106,144 +110,154 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Name and greeting styling */
-    .name-greeting {
-      font-size: 1.25rem; /* Slightly smaller font size */
-      font-weight: 600;
-      color: #2d3748;
-      text-align: center;
-      margin-bottom: 12px; /* Reduced margin */
+    /* Results container (initially hidden) */
+    #marksDisplay {
+      opacity: 0;
+      transition: opacity 0.5s ease;
     }
-
-    /* Footer styling */
-    .footer {
-      position: fixed;
-      bottom: 0;
+    
+    #marksDisplay.visible {
+      opacity: 1;
+    }
+    
+    /* Styled table for results */
+    .results-table {
       width: 100%;
-      margin-top: 24px;
-      text-align: center;
-      color: black;
-      font-size: 1rem;
-      opacity: 0.8;
+      border-collapse: collapse;
+    }
+    .results-table thead {
+      background-color: #ff6f00;
+      color: #fff;
+    }
+    .results-table th, .results-table td {
+      padding: 12px 8px;
+      border: 1px solid #e2e8f0;
+      text-align: left;
+    }
+    .results-table tbody tr:nth-child(even) {
+      background-color: #f9fafb;
     }
 
-    /* Ensure table fits on mobile screens */
+    /* Footer */
+    .footer {
+      font-size: 0.9rem;
+      color: #7f8c8d;
+      margin-top: 2rem;
+    }
+
     @media (max-width: 640px) {
-      .marks-table {
-        font-size: 12px; /* Even smaller font size for mobile */
-      }
-
-      .marks-table th,
-      .marks-table td {
-        padding: 6px; /* Further reduced padding for mobile */
-      }
-
-      .name-greeting {
-        font-size: 1rem; /* Smaller font size for mobile */
-      }
-
       .card {
-        padding: 16px;
+        padding: 24px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="card smooth-transition">
-    <!-- Form for entering mobile number -->
-    <h1 class="text-2xl font-bold text-center mb-4 text-gray-800">NGIT CIE Marks Viewer</h1>
-    <form id="mobileForm" class="space-y-4">
-      <div>
-        <label for="mobileNumber" class="block text-sm font-medium text-gray-700 mb-2">Enter Your Parents Mobile Number</label>
-        <input
-          type="text"
-          id="mobileNumber"
-          name="mobileNumber"
-          maxlength="10"
-          placeholder="10-digit mobile number"
-          class="input-field"
-          required
-        />
-      </div>
-      <button type="submit" class="submit-btn w-full flex items-center justify-center">
-        <span id="submitText">Get CIE Marks</span>
-        <div id="loadingSpinner" class="loading-spinner ml-2 hidden"></div>
+  <div class="card" id="homeUI">
+    <h1>NGIT CIE Marks Viewer</h1>
+    <p class="mb-4 text-gray-600">Enter Your Parents mobile number</p>
+    <form id="mobileForm">
+      <input
+        type="text"
+        id="mobileNumber"
+        name="mobileNumber"
+        maxlength="10"
+        placeholder="10-digit mobile number"
+        class="input-field"
+        required
+      />
+      <button type="submit" class="submit-btn">
+        <span id="submitText">Fetch marks</span>
+        <div id="loadingSpinner" class="loading-spinner hidden"></div>
       </button>
     </form>
+    <div class="footer">Designed by Vardan</div>
+  </div>
 
-    <!-- Display area for CIE Marks -->
-    <div id="marksDisplay" class="mt-6 hidden smooth-transition">
-      <div id="nameGreeting" class="name-greeting"></div>
-      <div id="marksTable" class="overflow-x-auto"></div>
+  <!-- Results container (hidden initially) -->
+  <div class="card hidden" id="resultsUI" style="max-width: 800px;">
+    <div id="nameGreeting" class="text-lg font-medium mb-4"></div>
+    <div id="marksTable" class="overflow-x-auto"></div>
+    <div class="mt-4">
+      <button id="backButton" class="submit-btn" style="background: #333; margin-top: 1rem;">
+        Back to Home
+      </button>
     </div>
   </div>
 
-  <!-- Footer -->
-  <div class="footer">
-    Designed by Vardan
-  </div>
-
   <script>
-    // Function to handle form submission
-    document.getElementById('mobileForm').addEventListener('submit', async (event) => {
-      event.preventDefault(); // Prevent default form submission
+    // Utility function to add/remove hidden class
+    function hideElement(el) {
+      el.classList.add('hidden');
+    }
+    function showElement(el) {
+      el.classList.remove('hidden');
+    }
 
+    // Handle form submission
+    document.getElementById('mobileForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
       const mobileNumber = document.getElementById('mobileNumber').value.trim();
       if (mobileNumber.length !== 10 || isNaN(mobileNumber)) {
         alert('Please enter a valid 10-digit mobile number.');
         return;
       }
-
-      // Show loading spinner
       document.getElementById('loadingSpinner').classList.remove('hidden');
-      document.getElementById('submitText').textContent = 'Fetching...';
+      document.getElementById('submitText').textContent = 'Fetching marks...';
 
       try {
         // Fetch name from the API
         const nameResponse = await fetch(`https://nam969.89determined.workers.dev/?mobile_number=${mobileNumber}`);
-        if (!nameResponse.ok) {
-          throw new Error('Failed to fetch name');
-        }
+        if (!nameResponse.ok) throw new Error('Failed to fetch name');
         const name = await nameResponse.text();
 
         // Fetch CIE marks data from the API
         const marksResponse = await fetch(`https://cie.89determined.workers.dev/?mobile_number=${mobileNumber}`);
-        if (!marksResponse.ok) {
-          throw new Error('Failed to fetch marks data');
-        }
-        const data = await marksResponse.text(); // Get the raw HTML response
-
-        // Parse the HTML and extract the table
+        if (!marksResponse.ok) throw new Error('Failed to fetch marks data');
+        const data = await marksResponse.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, 'text/html');
         const table = doc.querySelector('.box-body.no-padding table');
+        if (!table) throw new Error('No marks data found');
 
-        if (!table) {
-          throw new Error('No marks data found');
-        }
+        // Enhance table styling by adding classes and custom markup
+        table.classList.add('results-table');
 
-        // Add custom classes to the table
-        table.classList.add('marks-table');
+        // Transition: fade out home UI and show results UI
+        const homeUI = document.getElementById('homeUI');
+        homeUI.classList.add('fade-out');
+        setTimeout(() => {
+          hideElement(homeUI);
+          const resultsUI = document.getElementById('resultsUI');
+          document.getElementById('nameGreeting').innerHTML = `Name: <span class="font-semibold text-blue-600">${name}</span>`;
+          const marksTable = document.getElementById('marksTable');
+          marksTable.innerHTML = '';
+          marksTable.appendChild(table.cloneNode(true));
+          showElement(resultsUI);
+          // Force reflow then add visible class for smooth fade-in
+          void resultsUI.offsetWidth;
+          resultsUI.classList.add('visible');
+        }, 500);
 
-        // Display the name and greeting
-        const nameGreeting = document.getElementById('nameGreeting');
-        nameGreeting.innerHTML = `Hello, <span class="text-purple-600">${name}</span>!`;
-
-        // Display the table
-        const marksTable = document.getElementById('marksTable');
-        marksTable.innerHTML = ''; // Clear previous content
-        marksTable.appendChild(table.cloneNode(true)); // Append the table
-
-        // Show the marks display section
-        document.getElementById('marksDisplay').classList.remove('hidden');
       } catch (error) {
         alert('An error occurred while fetching the data. Please try again.');
         console.error(error);
       } finally {
-        // Hide loading spinner
         document.getElementById('loadingSpinner').classList.add('hidden');
-        document.getElementById('submitText').textContent = 'Get CIE Marks';
+        document.getElementById('submitText').textContent = 'Fetch marks';
       }
+    });
+
+    // Back button to go back to Home UI
+    document.getElementById('backButton').addEventListener('click', () => {
+      const resultsUI = document.getElementById('resultsUI');
+      resultsUI.classList.remove('visible');
+      setTimeout(() => {
+        hideElement(resultsUI);
+        const homeUI = document.getElementById('homeUI');
+        homeUI.classList.remove('fade-out');
+        showElement(homeUI);
+      }, 500);
     });
   </script>
 </body>
