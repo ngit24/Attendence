@@ -27,19 +27,20 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    padding: 20px;
+    padding: 10px; /* Reduced padding */
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
   }
 
   .dashboard {
-    width: 100%;
+    width: 95%; /* Reduced from 100% */
     max-width: 1200px;
     background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
     backdrop-filter: blur(10px);
     border-radius: 20px;
-    padding: 30px;
+    padding: 15px; /* Reduced padding */
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    margin-bottom: 80px;
+    margin: 10px auto 60px; /* Adjusted margins */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -68,8 +69,8 @@
   }
 
   .input-section input {
-    width: 100%;
-    max-width: 400px;
+    width: 90%; /* Reduced width */
+    max-width: 300px; /* Smaller max-width */
     padding: 12px;
     border: 2px solid #ff6b00; /* Orange border */
     border-radius: 10px;
@@ -160,9 +161,12 @@
 
   .chart-container {
     background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto; /* Allow horizontal scroll if needed */
   }
 
   .session-badge {
@@ -435,8 +439,8 @@ footer ul li {
     }
 
     .day-cards {
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 8px;
     }
 
     .day-card {
@@ -445,6 +449,34 @@ footer ul li {
 
     .day-card h4 {
       font-size: 1rem;
+    }
+
+    .dashboard {
+      padding: 10px;
+      width: 95%;
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      word-wrap: break-word;
+    }
+
+    .percentage-circle {
+      width: 100px;
+      height: 100px;
+      font-size: 1.2rem;
+    }
+
+    .additional-buttons {
+      margin-top: 5%;
+      width: 100%;
+    }
+
+    .button, .cie-button, .sem-button {
+      width: 90%;
+      max-width: 300px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
     }
   }
 
@@ -460,6 +492,37 @@ footer ul li {
 
     .day-card {
       padding: 8px;
+    }
+
+    body {
+      padding: 5px;
+    }
+
+    .dashboard {
+      padding: 10px;
+      width: 98%;
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+    }
+
+    .input-section input {
+      width: 95%;
+      font-size: 0.9rem;
+    }
+
+    .day-cards {
+      grid-template-columns: 1fr; /* Single column for smallest screens */
+    }
+
+    footer {
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+
+    .gradient-text {
+      font-size: 1em;
     }
   }
   .additional-buttons {
@@ -518,13 +581,11 @@ footer ul li {
   <div class="additional-buttons">
 
     <a href="https://ngit24.me/cie.html" class="button cie-button">
-      <i class="fas fa-chart-line"></i> Check CIE Marks
+      <i class="fas fa-chart-line"></i>Check Your CIE Marks
     </a>
-    <a href="https://ngit24.me/sem.html" class="button sem-button">
-      <i class="fas fa-chart-bar"></i> Check SEM Results
-    </a>
+    
 	<a href="https://ngit24.github.io/pyq/" class="button pyqs-button">
-      <i class="fas fa-book"></i> Get PYQS
+      <i class="fas fa-book"></i>Get PYQS
     </a>
   </div>
 </div>
