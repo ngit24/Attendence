@@ -689,8 +689,10 @@ footer ul li {
 
       document.getElementById('studentName').textContent = `Hello, ${data.name}!`;
 
+      // Handle null percentage values
       const totalPercentage = data.attendance.overallattperformance.totalpercentage;
-      document.getElementById('totalPercentage').textContent = `${totalPercentage}%`;
+      document.getElementById('totalPercentage').textContent = 
+          totalPercentage ? `${totalPercentage}%` : '0%';
 
       const updatedOn = data.attendance.attandance.dayobjects[0].updatedon;
       document.getElementById('updatedOn').textContent = `Last Updated: ${updatedOn}`;
