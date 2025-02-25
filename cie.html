@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <!-- TailwindCSS for utility classes -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+ 
   <style>
     /* Global Styles with Orange Gradient Background */
     body {
@@ -151,6 +152,7 @@
       }
     }
   </style>
+
 </head>
 <body>
   <div class="card" id="homeUI">
@@ -206,18 +208,25 @@
       document.getElementById('submitText').textContent = 'Fetching marks...';
 
       try {
-        // Fetch name from the API
+        // Fetch name from first API
         const nameResponse = await fetch(`https://nam969.89determined.workers.dev/?mobile_number=${mobileNumber}`);
         if (!nameResponse.ok) throw new Error('Failed to fetch name');
         const name = await nameResponse.text();
 
-        // Fetch CIE marks data from the API
+        // Fetch CIE marks data from second API
         const marksResponse = await fetch(`https://cie.89determined.workers.dev/?mobile_number=${mobileNumber}`);
         if (!marksResponse.ok) throw new Error('Failed to fetch marks data');
         const data = await marksResponse.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, 'text/html');
-        const table = doc.querySelector('.box-body.no-padding table');
+        
+        // Extract heading from the h2 tag inside box-body
+        const heading = doc.querySelector('.box-body h2')?.textContent?.trim() || 'NGIT CIE Marks Viewer';
+        // Update page title and heading
+        document.title = heading;
+        document.querySelector('.card h1').textContent = heading;
+
+        const table = doc.querySelector('.table.table-condensed');
         if (!table) throw new Error('No marks data found');
 
         // Enhance table styling by adding classes and custom markup
@@ -229,9 +238,11 @@
         setTimeout(() => {
           hideElement(homeUI);
           const resultsUI = document.getElementById('resultsUI');
-          document.getElementById('nameGreeting').innerHTML = `Name: <span class="font-semibold text-blue-600">${name}</span>`;
+          // Update the heading in results UI
+          document.getElementById('nameGreeting').innerHTML = 
+            `Name: <span class="font-semibold text-blue-600">${name}</span>`;
           const marksTable = document.getElementById('marksTable');
-          marksTable.innerHTML = '';
+          marksTable.innerHTML = `<h2 class="text-xl font-bold mb-4 text-center">${heading}</h2>`;
           marksTable.appendChild(table.cloneNode(true));
           showElement(resultsUI);
           // Force reflow then add visible class for smooth fade-in
