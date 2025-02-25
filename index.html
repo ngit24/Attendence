@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>NGIT Student Portal</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -25,11 +25,14 @@
     background: linear-gradient(135deg, #ff9a00, #ffffff); /* Orange to white gradient */
     color: #333;
     min-height: 100vh;
+    min-height: -webkit-fill-available; /* Fix for mobile Safari */
     display: flex;
     justify-content: center;
     padding: 10px; /* Reduced padding */
     width: 100%;
     overflow-x: hidden; /* Prevent horizontal scrolling */
+    position: relative;
+    padding-bottom: 60px; /* Height of footer */
   }
 
   .dashboard {
@@ -44,6 +47,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden; /* Prevent overflow */
+    position: relative;
+    min-height: calc(100vh - 120px); /* Account for footer */
   }
 
   .header {
@@ -167,6 +173,14 @@
     width: 100%;
     max-width: 100%;
     overflow-x: auto; /* Allow horizontal scroll if needed */
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Prevent overflow */
   }
 
   .session-badge {
@@ -313,10 +327,11 @@
   }
 
  /* Footer styles */
-footer {
+ /* Footer styles */
+ footer {
   border-radius: 10px;
   padding: 20px;
-  position: fixed;
+  position: relative; /* Change from fixed/absolute */
   bottom: 0;
   width: 100%;
   text-align: center;
@@ -355,7 +370,6 @@ footer ul {
 footer ul li {
   display: inline;
 }
-
 /* Gradient text effect for the name */
 .gradient-text {
   background: linear-gradient(90deg, #ff6b00, #ff9a00); /* Orange gradient */
@@ -454,6 +468,9 @@ footer ul li {
     .dashboard {
       padding: 10px;
       width: 95%;
+      width: 98%;
+      padding: 10px;
+      margin: 10px auto;
     }
 
     .header h1 {
@@ -477,6 +494,75 @@ footer ul li {
       max-width: 300px;
       padding: 8px 16px;
       font-size: 0.9rem;
+    }
+
+    .chart-container {
+      padding: 10px;
+    }
+
+    .session-circles {
+      gap: 4px;
+    }
+
+    .session-circle {
+      width: 20px;
+      height: 20px;
+    }
+
+    .dashboard {
+      width: 100%;
+      margin: 0;
+      padding: 10px;
+      border-radius: 0;
+      min-height: calc(100vh - 40px);
+    }
+
+    .chart-container {
+      height: 250px; /* Reduced height for mobile */
+      padding: 10px;
+    }
+
+    .daywise-attendance,
+    .subject-wise-attendance {
+      padding: 15px;
+      margin: 10px 0;
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .session-item {
+      padding: 8px;
+      margin-bottom: 5px;
+    }
+
+    .session-item h5 {
+      min-width: 80px; /* Reduced min-width */
+      font-size: 0.9rem;
+    }
+
+    .greeting-card {
+      margin: 15px 0;
+    }
+
+    .percentage-circle {
+      width: 100px;
+      height: 100px;
+      font-size: 1.5rem;
+    }
+
+    .legend {
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .input-section {
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+
+    .additional-buttons {
+      margin-top: 20px;
     }
   }
 
@@ -559,6 +645,238 @@ footer ul li {
   font-size: 1.2rem; /* Slightly larger icons */
 }
 
+.daywise-attendance {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.day-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.session-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.session-item h5 {
+  min-width: 120px;
+  margin: 0;
+  font-weight: 600;
+  color: #333;
+}
+
+.session-circles {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.session-circle {
+  flex: 0 0 auto;
+  width: 16px; /* Smaller default size */
+  height: 16px; /* Smaller default size */
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.session-circle::before {
+  font-size: 10px; /* Smaller checkmark/cross */
+}
+
+.session-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  gap: 8px;
+}
+
+.session-item h5 {
+  min-width: 70px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .session-circle {
+    width: 12px; /* Even smaller on mobile */
+    height: 12px;
+  }
+  
+  .session-circle::before {
+    font-size: 8px;
+  }
+  
+  .session-item h5 {
+    min-width: 60px;
+    font-size: 0.8rem;
+  }
+  
+  .session-item {
+    padding: 6px;
+    gap: 4px;
+  }
+}
+
+/* Remove scroll-related styles */
+.session-circles::-webkit-scrollbar {
+  display: none;
+}
+
+.subject-wise-attendance {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 107, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.daywise-attendance,
+.subject-wise-attendance {
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 107, 0, 0.1);
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.daywise-attendance h3,
+.subject-wise-attendance h3 {
+  position: relative;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  border-bottom: 2px solid rgba(255, 107, 0, 0.1);
+  color: #ff6b00;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.session-item {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.chart-container {
+  background: rgba(255, 255, 255, 0.98);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 107, 0, 0.1);
+  height: 300px;
+}
+
+@media (max-width: 768px) {
+  .session-circles {
+    padding: 5px;
+  }
+  
+  .daywise-attendance,
+  .subject-wise-attendance {
+    padding: 15px;
+  }
+  
+  .session-item {
+    padding: 10px;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  .dashboard {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Ensure content doesn't overflow viewport */
+.data-section {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+footer {
+  position: relative; /* Change from fixed/absolute */
+  margin-top: 20px;
+  padding: 10px;
+  height: auto;
+}
+
+.session-circles {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 1px;
+  margin: 0;
+  width: calc(100% - 80px); /* Account for the date width */
+  justify-content: flex-start;
+}
+
+.session-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 8px;
+  width: 100%;
+}
+
+.session-item h5 {
+  min-width: 70px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.session-circle {
+  /* Remove fixed width/height */
+  aspect-ratio: 1;
+  height: auto;
+  flex: 1;
+  min-width: 0;
+  max-width: 16px; /* Maximum size */
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Update mobile styles */
+@media (max-width: 768px) {
+  .session-item h5 {
+    min-width: 60px;
+    font-size: 0.8rem;
+  }
+  
+  .session-item {
+    padding: 6px 8px;
+    gap: 4px;
+  }
+
+  .session-circles {
+    width: calc(100% - 65px); /* Smaller date width on mobile */
+  }
+}
 </style>
 </head>
 
@@ -641,11 +959,7 @@ footer ul li {
     <button id="closePopup">Close</button>
   </div>
 
-  <footer class="footer">
-  <p style="text-align: center; font-size: 18px; color: #666;">
-      Designed by <span style="font-weight: bold; color: #FF7A00;">Vardan</span>
-  </p>
-</footer>
+ 
 
  <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -714,6 +1028,8 @@ footer ul li {
       });
 
       renderSubjectChart(data.attendance.overallattperformance.overall);
+      adjustCircleSizes();
+      window.addEventListener('resize', adjustCircleSizes);
   }
 
   function renderSubjectChart(subjectsData) {
@@ -736,17 +1052,81 @@ footer ul li {
               datasets: [{
                   label: 'Attendance Percentage',
                   data: attendanceValues,
-                  backgroundColor: 'transparent',
-                  borderColor: '#00f7ff',
-                  borderWidth: 2
+                  backgroundColor: 'rgba(255, 107, 0, 0.7)', // Orange with transparency
+                  borderColor: '#ff6b00',
+                  borderWidth: 2,
+                  borderRadius: 8,
+                  barThickness: 25,
               }]
           },
           options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                  legend: {
+                      display: true,
+                      position: 'top',
+                      labels: {
+                          font: {
+                              family: 'Montserrat',
+                              size: 12
+                          },
+                          color: '#333'
+                      }
+                  },
+                  tooltip: {
+                      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                      titleColor: '#333',
+                      bodyColor: '#333',
+                      titleFont: {
+                          family: 'Montserrat',
+                          size: 14,
+                          weight: 'bold'
+                      },
+                      bodyFont: {
+                          family: 'Montserrat',
+                          size: 13
+                      },
+                      borderColor: '#ff6b00',
+                      borderWidth: 1,
+                      padding: 10,
+                      displayColors: false
+                  }
+              },
               scales: {
                   y: {
                       beginAtZero: true,
-                      max: 100
+                      max: 100,
+                      grid: {
+                          display: true,
+                          color: 'rgba(0, 0, 0, 0.1)'
+                      },
+                      ticks: {
+                          font: {
+                              family: 'Montserrat',
+                              size: 11
+                          },
+                          color: '#333'
+                      }
+                  },
+                  x: {
+                      grid: {
+                          display: false
+                      },
+                      ticks: {
+                          font: {
+                              family: 'Montserrat',
+                              size: 11
+                          },
+                          color: '#333',
+                          maxRotation: 45,
+                          minRotation: 45
+                      }
                   }
+              },
+              animation: {
+                  duration: 2000,
+                  easing: 'easeInOutQuart'
               }
           }
       });
@@ -768,6 +1148,31 @@ footer ul li {
           case '2': return 'Not Taken';
           default: return '';
       }
+  }
+
+  function adjustCircleSizes() {
+    const sessionItems = document.querySelectorAll('.session-item');
+    
+    sessionItems.forEach(item => {
+      const circlesContainer = item.querySelector('.session-circles');
+      const circles = circlesContainer.querySelectorAll('.session-circle');
+      const containerWidth = circlesContainer.offsetWidth;
+      const totalCircles = circles.length;
+      
+      // Calculate size with 1px gap between circles
+      let size = Math.floor((containerWidth - (totalCircles - 1)) / totalCircles);
+      // Limit maximum size
+      size = Math.min(size, 16);
+      // Ensure minimum size
+      size = Math.max(size, 8);
+      
+      circles.forEach(circle => {
+        circle.style.width = `${size}px`;
+        circle.style.height = `${size}px`;
+        // Adjust checkmark/cross size
+        circle.style.fontSize = `${size * 0.6}px`;
+      });
+    });
   }
 </script>
 
