@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NGIT Student Portal</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   
  <style>
   /* General Reset */
@@ -21,18 +22,15 @@
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Poppins:wght@300;400;600&display=swap');
 
   body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Space Mono', monospace;
     background: linear-gradient(135deg, #ff9a00, #ffffff); /* Orange to white gradient */
     color: #333;
     min-height: 100vh;
-    min-height: -webkit-fill-available; /* Fix for mobile Safari */
     display: flex;
     justify-content: center;
     padding: 10px; /* Reduced padding */
     width: 100%;
     overflow-x: hidden; /* Prevent horizontal scrolling */
-    position: relative;
-    padding-bottom: 60px; /* Height of footer */
   }
 
   .dashboard {
@@ -47,9 +45,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden; /* Prevent overflow */
-    position: relative;
-    min-height: calc(100vh - 120px); /* Account for footer */
   }
 
   .header {
@@ -61,7 +56,7 @@
     font-size: 2.5rem;
     font-weight: 700;
     color: #ff6b00; /* Orange accent */
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Space Mono', monospace;
   }
 
   .header p {
@@ -75,6 +70,7 @@
   }
 
   .input-section input {
+    font-family: 'Space Mono', monospace;
     width: 90%; /* Reduced width */
     max-width: 300px; /* Smaller max-width */
     padding: 12px;
@@ -87,6 +83,7 @@
   }
 
   .input-section button {
+    font-family: 'Space Mono', monospace;
     padding: 12px 24px;
     border: none;
     border-radius: 10px;
@@ -107,37 +104,539 @@
 
   .greeting-card {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 250, 240, 0.8));
+    border-radius: 15px;
+    padding: 20px 15px;
+    box-shadow: 0 8px 25px rgba(255, 107, 0, 0.1);
   }
-
+  
   .greeting-card h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #ff6b00; /* Orange accent */
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #333;
+    font-family: 'Space Mono', monospace;
+    position: relative;
+    display: inline-block;
   }
-
+  
+  .greeting-card h2::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6b00, transparent);
+    border-radius: 3px;
+  }
+  
+  /* Enhanced percentage circle with "exceeding" value effect */
   .percentage-circle {
-    width: 150px;
-    height: 150px;
-    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0 auto 20px;
-    font-size: 2rem;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(255, 107, 0, 0.15);
+    border: 3px solid rgba(255, 255, 255, 0.8);
+    overflow: visible; /* Allow content to be visible */
+  }
+  
+  .percentage-circle::before {
+    content: "";
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    z-index: -1;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6b00, #ff9a00);
+  }
+  
+  .percentage-circle span {
+    font-size: 2.0rem;
     font-weight: 700;
-    color: #ff6b00; /* Orange accent */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #ff6b00, #ff9a00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Space Mono', monospace;
+    position: relative; /* For positioning the % symbol */
+  }
+  
+  .percentage-circle span::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -18px;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, #ff6b00, #ff9a00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  #updatedOn {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+    font-style: italic;
+  }
+  
+  /* More compact day-wise attendance with reduced height */
+  .daywise-attendance {
+    margin-bottom: 20px;
+    width: 100%;
+    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.9), rgba(255, 240, 230, 0.8));
+    border-radius: 15px;
+    padding: 12px 15px;
+    box-shadow: 0 8px 30px rgba(255, 107, 0, 0.1);
+  }
+  
+  .day-card {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    border-radius: 12px;
+    text-align: center;
+    overflow: hidden;
+    border: 1px solid rgba(255, 107, 0, 0.1);
+    max-height: 200px; /* Restrict initial height */
+    transition: max-height 0.5s ease;
+  }
+  
+  .day-card.expanded {
+    max-height: 800px; /* Allow expansion when needed */
+  }
+  
+  /* More compact today session item */
+  .session-item.today {
+    margin-bottom: 1px;
+    padding-bottom: 1px;
+    border-bottom: none;
+  }
+  
+  .session-item.today h5 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+    padding: 3px 8px;
+    background: linear-gradient(to right, rgba(255, 107, 0, 0.2), transparent);
+  }
+  
+  /* Improved expand button with better icon */
+  .expand-button {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9));
+    color: #ff6b00;
+    border: none;
+    border-radius: 20px;
+    margin: 8px auto 0;
+    padding: 6px 16px 6px 36px; /* Space for the custom icon */
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(255, 107, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+  
+  /* Custom expand icon with animation */
+  .expand-icon {
+    position: absolute;
+    left: 12px;
+    width: 16px;
+    height: 16px;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  
+  .expand-icon::before,
+  .expand-icon::after {
+    content: "";
+    position: absolute;
+    background-color: #ff6b00;
+    transition: transform 0.3s ease;
+  }
+  
+  .expand-icon::before {
+    width: 16px;
+    height: 2px;
+    top: 7px;
+    left: 0;
+  }
+  
+  .expand-icon::after {
+    width: 2px;
+    height: 16px;
+    top: 0;
+    left: 7px;
+  }
+  
+  .expand-button.expanded .expand-icon::after {
+    transform: rotate(90deg);
+    opacity: 0;
+  }
+  
+  .expand-button:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 240, 230, 0.9));
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.2);
+    transform: translateY(-1px);
+  }
+  
+  /* Consistent headings for sections */
+  .daywise-attendance h3,
+  .subject-wise-attendance h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: #ff6b00;
+    text-align: center;
+    font-weight: 600;
+    border-bottom: 2px solid rgba(255, 107, 0, 0.2);
+    padding-bottom: 8px;
+  }
+  
+  /* Enhanced subject-wise attendance */
+  .subject-wise-attendance {
+    margin-bottom: 25px;
+    width: 100%;
+    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.9), rgba(255, 240, 230, 0.8));
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 8px 30px rgba(255, 107, 0, 0.1);
   }
 
-  .daywise-attendance,
+  /* Creative "Show More" button */
+  .expand-button {
+    background: none;
+    color: #ff6b00;
+    border: none;
+    margin: 10px auto 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    padding: 8px 16px;
+    border-radius: 20px;
+    z-index: 1;
+  }
+  
+  .expand-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 107, 0, 0.1), rgba(255, 154, 0, 0.1));
+    border-radius: 20px;
+    z-index: -1;
+    transition: all 0.3s ease;
+  }
+  
+  .expand-button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255, 107, 0, 0.2), rgba(255, 154, 0, 0.2));
+    border-radius: 20px;
+    z-index: -1;
+    transition: all 0.5s ease;
+  }
+  
+  .expand-button:hover::after {
+    left: 0;
+  }
+  
+  .expand-button:hover {
+    transform: translateY(-2px);
+    color: #e65c00;
+  }
+  
+  .expand-button i {
+    margin-right: 6px;
+    transition: transform 0.3s ease;
+  }
+  
+  .expand-button.expanded i {
+    transform: rotate(180deg);
+  }
+  
+  /* More compact session items */
+  .session-item {
+    margin-bottom: 1px;
+    border-bottom: 1px solid rgba(255, 107, 0, 0.1);
+    padding-bottom: 12px;
+  }
+  
+  .session-item:last-child {
+    margin-bottom: 5px;
+  }
+  
+  .session-item h5 {
+    margin-bottom: 8px;
+    font-size: 1rem;
+    padding: 4px 8px;
+  }
+  
+  .session-circles {
+    gap: 8px;
+    padding: 5px 0;
+  }
+  
+  .session-item {
+    margin-bottom: 1px;
+    border-bottom: 1px solid rgba(255, 107, 0, 0.1);
+    padding-bottom: 15px;
+    transition: all 0.3s ease;
+  }
+  
+  .session-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  
+  .session-item:hover {
+    background-color: rgba(255, 248, 240, 0.6);
+    border-radius: 8px;
+    padding: 8px;
+    margin: 0 0 18px 0;
+  }
+  
+  .session-item:not(.today) {
+    display: none; /* Hide all days except today initially */
+  }
+  
+  .session-item.visible {
+    display: block; /* Show days when made visible */
+  }
+  
+  .session-item h5 {
+    margin-bottom: 12px;
+    color: #333;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    background: linear-gradient(to right, rgba(255, 107, 0, 0.1), transparent);
+    border-radius: 20px;
+    display: inline-block;
+  }
+  
+  .session-circles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+  }
+  
+  .session-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 50%;
+    margin: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .session-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+  }
+  
+  .session-circle.present {
+    background: linear-gradient(135deg, #4caf50, #43a047);
+  }
+  
+  .session-circle.absent {
+    background: linear-gradient(135deg, #f44336, #e53935);
+  }
+  
+  .session-circle.not-taken {
+    background: linear-gradient(135deg, #9e9e9e, #757575);
+  }
+  
+  .session-circle.present::before,
+  .session-circle.absent::before,
+  .session-circle.not-taken::before {
+    content: none; /* Remove all content from circle indicators */
+  }
+  
+  /* Enhanced Legend */
+  .legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    transition: transform 0.2s ease;
+  }
+  
+  .legend-item:hover {
+    transform: translateY(-2px);
+  }
+  
+  .legend-item .circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .legend-item .present {
+    background: linear-gradient(135deg, #4caf50, #43a047);
+  }
+  
+  .legend-item .absent {
+    background: linear-gradient(135deg, #f44336, #e53935);
+  }
+  
+  .legend-item .not-taken {
+    background: linear-gradient(135deg, #9e9e9e, #757575);
+  }
+  
+  /* Improved responsive styles */
+  @media (max-width: 768px) {
+    .session-circle {
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+    }
+    
+    .session-circles {
+      gap: 8px;
+    }
+    
+    .session-item h5 {
+      font-size: 1rem;
+    }
+    
+    .daywise-attendance {
+      padding: 15px;
+    }
+    
+    .legend {
+      gap: 10px;
+      padding: 8px;
+    }
+    
+    .legend-item {
+      padding: 4px 8px;
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .session-circle {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      font-size: 12px;
+    }
+    
+    .session-circle::before {
+      font-size: 12px;
+    }
+    
+    .session-circles {
+      gap: 6px;
+    }
+    
+    .session-item {
+      margin-bottom: 1px;
+      padding-bottom: 1px;
+    }
+    
+    .session-item h5 {
+      font-size: 0.95rem;
+      padding: 4px 8px;
+    }
+    
+    .daywise-attendance {
+      padding: 12px;
+      margin-bottom: 25px;
+    }
+    
+    .daywise-attendance h3 {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+    }
+    
+    .day-card {
+      padding: 12px 8px;
+    }
+    
+    .legend {
+      gap: 8px;
+      padding: 6px;
+      flex-direction: row;
+    }
+    
+    .legend-item {
+      padding: 3px 6px;
+      font-size: 0.8rem;
+    }
+    
+    .legend-item .circle {
+      width: 12px;
+      height: 12px;
+    }
+  }
+  
+  @media (max-width: 360px) {
+    .session-circle {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+    }
+    
+    .session-circles {
+      gap: 4px;
+    }
+    
+    .session-item h5 {
+      font-size: 0.9rem;
+    }
+  }
+
   .subject-wise-attendance,
   .overall-attendance {
     margin-bottom: 30px;
   }
 
-  .daywise-attendance h3,
   .subject-wise-attendance h3,
   .overall-attendance h3 {
     font-size: 1.5rem;
@@ -173,14 +672,6 @@
     width: 100%;
     max-width: 100%;
     overflow-x: auto; /* Allow horizontal scroll if needed */
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 15px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    overflow: hidden; /* Prevent overflow */
   }
 
   .session-badge {
@@ -233,7 +724,7 @@
   }
 
   .session-circle.present::before {
-    content: '✔';
+    content: '';
     color: white;
     font-size: 12px;
     display: flex;
@@ -243,7 +734,7 @@
   }
 
   .session-circle.absent::before {
-    content: '✘';
+    content: '';
     color: white;
     font-size: 12px;
     display: flex;
@@ -327,21 +818,21 @@
   }
 
  /* Footer styles */
- /* Footer styles */
- footer {
+footer {
   border-radius: 10px;
   padding: 20px;
-  position: relative; /* Change from fixed/absolute */
+  position: fixed;
   bottom: 0;
   width: 100%;
   text-align: center;
   color: #333;
   z-index: 1000;
   
-  font-family: "Lucida Console", "Courier New", monospace;
+  font-family: 'Space Mono', monospace;
 }
 
 footer p {
+  font-family: 'Space Mono', monospace;
   font-size: 1rem;
   margin: 0;
   font-weight: 400; /* Regular weight for normal text */
@@ -370,13 +861,14 @@ footer ul {
 footer ul li {
   display: inline;
 }
+
 /* Gradient text effect for the name */
 .gradient-text {
   background: linear-gradient(90deg, #ff6b00, #ff9a00); /* Orange gradient */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 600;
-  font-family: "Lucida Console", "Courier New", monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 1.2em; /* Slightly larger text */
   animation: gradient-shift 3s infinite alternate; /* Optional: Add animation */
 }
@@ -461,16 +953,9 @@ footer ul li {
       padding: 10px;
     }
 
-    .day-card h4 {
-      font-size: 1rem;
-    }
-
     .dashboard {
       padding: 10px;
       width: 95%;
-      width: 98%;
-      padding: 10px;
-      margin: 10px auto;
     }
 
     .header h1 {
@@ -496,73 +981,14 @@ footer ul li {
       font-size: 0.9rem;
     }
 
-    .chart-container {
-      padding: 10px;
+    .session-circle {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
     }
 
     .session-circles {
-      gap: 4px;
-    }
-
-    .session-circle {
-      width: 20px;
-      height: 20px;
-    }
-
-    .dashboard {
-      width: 100%;
-      margin: 0;
-      padding: 10px;
-      border-radius: 0;
-      min-height: calc(100vh - 40px);
-    }
-
-    .chart-container {
-      height: 250px; /* Reduced height for mobile */
-      padding: 10px;
-    }
-
-    .daywise-attendance,
-    .subject-wise-attendance {
-      padding: 15px;
-      margin: 10px 0;
-      width: 100%;
-      border-radius: 10px;
-    }
-
-    .session-item {
-      padding: 8px;
-      margin-bottom: 5px;
-    }
-
-    .session-item h5 {
-      min-width: 80px; /* Reduced min-width */
-      font-size: 0.9rem;
-    }
-
-    .greeting-card {
-      margin: 15px 0;
-    }
-
-    .percentage-circle {
-      width: 100px;
-      height: 100px;
-      font-size: 1.5rem;
-    }
-
-    .legend {
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .input-section {
-      padding: 10px;
-      margin-bottom: 15px;
-    }
-
-    .additional-buttons {
-      margin-top: 20px;
+      gap: 6px;
     }
   }
 
@@ -610,6 +1036,20 @@ footer ul li {
     .gradient-text {
       font-size: 1em;
     }
+
+    .session-circle {
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+    }
+
+    .session-circles {
+      gap: 4px;
+    }
+
+    .session-item h5 {
+      font-size: 0.9rem;
+    }
   }
   .additional-buttons {
   display: flex;
@@ -645,239 +1085,299 @@ footer ul li {
   font-size: 1.2rem; /* Slightly larger icons */
 }
 
-.daywise-attendance {
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.day-card {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-}
-
-.session-item {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  border-bottom: 1px solid #eee;
-}
-
-.session-item h5 {
-  min-width: 120px;
-  margin: 0;
-  font-weight: 600;
-  color: #333;
-}
-
-.session-circles {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 2px;
-  margin: 0;
-  width: 100%;
-  justify-content: flex-start;
-}
-
-.session-circle {
-  flex: 0 0 auto;
-  width: 16px; /* Smaller default size */
-  height: 16px; /* Smaller default size */
-  margin: 0;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.session-circle::before {
-  font-size: 10px; /* Smaller checkmark/cross */
-}
-
-.session-item {
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  gap: 8px;
-}
-
-.session-item h5 {
-  min-width: 70px;
-  font-size: 0.9rem;
-  white-space: nowrap;
-}
-
-/* Mobile optimizations */
-@media (max-width: 768px) {
-  .session-circle {
-    width: 12px; /* Even smaller on mobile */
-    height: 12px;
+.expand-button {
+    background: linear-gradient(135deg, #ff6b00, #ff9a00);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    margin: 15px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(255, 107, 0, 0.2);
   }
   
-  .session-circle::before {
-    font-size: 8px;
+  .expand-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
   }
   
-  .session-item h5 {
-    min-width: 60px;
-    font-size: 0.8rem;
+  .expand-button i {
+    margin-right: 6px;
+  }
+
+  /* Modern popup styles */
+  .modern-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 1002;
+    max-width: 85%;
+    width: 350px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    visibility: hidden;
   }
   
-  .session-item {
-    padding: 6px;
-    gap: 4px;
-  }
-}
-
-/* Remove scroll-related styles */
-.session-circles::-webkit-scrollbar {
-  display: none;
-}
-
-.subject-wise-attendance {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.98);
-  border-radius: 15px;
-  padding: 25px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 107, 0, 0.1);
-  margin-bottom: 30px;
-}
-
-.daywise-attendance,
-.subject-wise-attendance {
-  background: rgba(255, 255, 255, 0.98);
-  border-radius: 15px;
-  padding: 25px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 107, 0, 0.1);
-  margin-bottom: 30px;
-  width: 100%;
-  max-width: 800px;
-}
-
-.daywise-attendance h3,
-.subject-wise-attendance h3 {
-  position: relative;
-  padding-bottom: 15px;
-  margin-bottom: 25px;
-  border-bottom: 2px solid rgba(255, 107, 0, 0.1);
-  color: #ff6b00;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-.session-item {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.chart-container {
-  background: rgba(255, 255, 255, 0.98);
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 107, 0, 0.1);
-  height: 300px;
-}
-
-@media (max-width: 768px) {
-  .session-circles {
-    padding: 5px;
+  .modern-popup.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    visibility: visible;
   }
   
-  .daywise-attendance,
-  .subject-wise-attendance {
-    padding: 15px;
+  .modern-popup-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6b00, #ff9a00);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 15px;
   }
   
-  .session-item {
-    padding: 10px;
-  }
-}
-
-@supports (-webkit-touch-callout: none) {
-  .dashboard {
-    min-height: -webkit-fill-available;
-  }
-}
-
-/* Ensure content doesn't overflow viewport */
-.data-section {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-footer {
-  position: relative; /* Change from fixed/absolute */
-  margin-top: 20px;
-  padding: 10px;
-  height: auto;
-}
-
-.session-circles {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 1px;
-  margin: 0;
-  width: calc(100% - 80px); /* Account for the date width */
-  justify-content: flex-start;
-}
-
-.session-item {
-  display: flex;
-  align-items: center;
-  padding: 8px 12px;
-  gap: 8px;
-  width: 100%;
-}
-
-.session-item h5 {
-  min-width: 70px;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.session-circle {
-  /* Remove fixed width/height */
-  aspect-ratio: 1;
-  height: auto;
-  flex: 1;
-  min-width: 0;
-  max-width: 16px; /* Maximum size */
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-/* Update mobile styles */
-@media (max-width: 768px) {
-  .session-item h5 {
-    min-width: 60px;
-    font-size: 0.8rem;
+  .modern-popup h3 {
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.4rem;
   }
   
-  .session-item {
-    padding: 6px 8px;
-    gap: 4px;
+  .modern-popup p {
+    margin-bottom: 20px;
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .modern-popup button {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #ff6b00, #ff9a00);
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 107, 0, 0.2);
+  }
+  
+  .modern-popup button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 0, 0.3);
+  }
+  
+  .modern-popup button:active {
+    transform: translateY(1px);
+  }
+  
+  /* Overlay styles */
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .popup-overlay.show {
+    opacity: 1;
+    visibility: visible;
   }
 
-  .session-circles {
-    width: calc(100% - 65px); /* Smaller date width on mobile */
+  /* Modern footer with wave effect and glassmorphism */
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    font-family: 'Space Mono', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 10px;
+    overflow: hidden;
   }
-}
+  
+  .footer-content {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding: 15px 25px 12px;
+    box-shadow: 0 -5px 25px rgba(255, 107, 0, 0.1);
+    max-width: 95%;
+    margin: 0 auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+  }
+  
+  .footer-content:hover {
+    transform: translateY(-3px);
+  }
+  
+  
+  
+  .footer-signature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .footer-text {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+  }
+  
+  .designer-name {
+    position: relative;
+    font-weight: bold;
+    background: linear-gradient(90deg, #ff6b00, #ff9a00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 0 2px;
+    display: inline-block;
+  }
+  
+  .designer-name::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, #ff6b00, transparent);
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  
+  .footer-content:hover .designer-name::after {
+    transform: scaleX(1);
+  }
+  
+  .footer-icon {
+    font-size: 16px;
+    margin-right: 4px;
+    color: #ff6b00;
+    transform-origin: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .footer-content:hover .footer-icon {
+    animation: pulse 1s infinite alternate;
+  }
+  
+  .back-to-top {
+    position: absolute;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #ff6b00, #ff9a00);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    box-shadow: 0 3px 10px rgba(255, 107, 0, 0.3);
+    cursor: pointer;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+    transform: translateY(0);
+  }
+  
+  .back-to-top:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 107, 0, 0.4);
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.2);
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .footer-content {
+      padding: 12px 18px 10px;
+    }
+    
+    .footer-text {
+      font-size: 14px;
+    }
+    
+    .back-to-top {
+      width: 32px;
+      height: 32px;
+      right: 12px;
+    }
+  }
+
+  /* Update the hidden session items style to use opacity instead of display:none */
+  .session-item:not(.today) {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+    overflow: hidden;
+    transition: opacity 0.3s ease, height 0.3s ease, margin 0.3s ease, padding 0.3s ease;
+  }
+  
+  .session-item.visible {
+    opacity: 1;
+    height: auto;
+    pointer-events: auto;
+    margin-bottom: 1px;
+    padding-bottom: 5px;
+    overflow: visible;
+  }
+  
+  /* Ensure the container expands smoothly */
+  .day-card {
+    transition: max-height 0.5s ease;
+  }
 </style>
+
 </head>
 
 <body>
@@ -922,8 +1422,12 @@ footer {
       <!-- Day-wise Attendance -->
      <div class="daywise-attendance">
   <h3>Day-wise Attendance</h3>
-  <div class="day-card">
+  <div class="day-card" id="dayCard">
     <div id="daywiseAttendance" class="sessions-grid"></div>
+    <button id="expandDays" class="expand-button">
+      
+      Show More Days
+    </button>
   </div>
   <!-- Legend -->
   <div class="legend">
@@ -953,13 +1457,36 @@ footer {
 
   <div class="loader"></div>
 
-  <div class="popup" id="popup">
-    <h3>Warning</h3>
-    <p>Incorrect number, try only your parent's number.</p>
-    <button id="closePopup">Close</button>
+  <div class="popup-overlay" id="popupOverlay"></div>
+<div class="modern-popup" id="modernPopup">
+  <div class="modern-popup-icon">
+    <i class="fas fa-exclamation-triangle"></i>
   </div>
+  <h3 id="popupTitle">Warning</h3>
+  <p id="popupMessage">Incorrect number, try only your parent's number.</p>
+  <button id="closeModernPopup">Got It</button>
+</div>
 
- 
+  <footer class="footer">
+  <div class="footer-content">
+    <div class="footer-signature">
+      <p class="footer-text">Designed by <span class="designer-name">Vardan</span></p>
+    </div>
+   
+     
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Add this function to your existing JavaScript
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+</script>
 
  <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -989,10 +1516,85 @@ footer {
 
             displayAttendanceData(data);
         } catch (error) {
-            alert('Incorrect number, try only your parent\'s number.');
+           
             document.querySelector('.loader').style.display = 'none';
         }
     });
+
+    // Get form elements and popups
+    const form = document.getElementById('attendanceForm');
+    const parentNumber = document.getElementById('parentNumber');
+    const modernPopup = document.getElementById('modernPopup');
+    const popupOverlay = document.getElementById('popupOverlay');
+    const closeModernPopup = document.getElementById('closeModernPopup');
+    const popupTitle = document.getElementById('popupTitle');
+    const popupMessage = document.getElementById('popupMessage');
+    
+    // Add functionality for auto-submitting form when 10 digits are entered
+    parentNumber.addEventListener('input', function() {
+      // Remove any non-numeric characters
+      this.value = this.value.replace(/\D/g, '');
+      
+      // If the length is 10, auto-submit
+      if (this.value.length === 10) {
+        setTimeout(() => {
+          form.dispatchEvent(new Event('submit'));
+        }, 5); // Short delay for better UX
+      }
+    });
+    
+    // Close popup when close button is clicked
+    closeModernPopup.addEventListener('click', () => {
+      modernPopup.classList.remove('show');
+      popupOverlay.classList.remove('show');
+    });
+    
+    // Function to show modern popup
+    function showModernPopup(title, message) {
+      popupTitle.textContent = title;
+      popupMessage.textContent = message;
+      modernPopup.classList.add('show');
+      popupOverlay.classList.add('show');
+    }
+    
+    // Update form submission to use the modern popup instead of alert
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const parentNumberValue = parentNumber.value.trim();
+      
+      if (!parentNumberValue) {
+        parentNumber.style.border = '2px solid red';
+        gsap.to(parentNumber, { x: -10, duration: 0.1, repeat: 5, yoyo: true });
+        return;
+      }
+      
+      fetch(`https://sanjaya-netra.89determined.workers.dev/?mobile_number=${parentNumberValue}`)
+      document.querySelector('.loader').style.display = 'flex';
+      document.getElementById('attendanceData').style.display = 'none';
+      
+      try {
+        const response = await fetch(`https://test.89determined.workers.dev/?mobile_number=${parentNumberValue}`);
+        const data = await response.json();
+        
+        document.querySelector('.loader').style.display = 'none';
+        document.querySelector('.input-section').classList.add('hidden');
+        document.querySelector('.header').classList.add('hidden');
+        
+        displayAttendanceData(data);
+      } catch (error) {
+        document.querySelector('.loader').style.display = 'none';
+        showModernPopup('Error', 'Incorrect number, try again with your parent\'s number.');
+      }
+    });
+    
+    // Close popup when clicking outside
+    popupOverlay.addEventListener('click', () => {
+      modernPopup.classList.remove('show');
+      popupOverlay.classList.remove('show');
+    });
+    
+    // Rest of your existing code...
   });
 
   function displayAttendanceData(data) {
@@ -1003,19 +1605,27 @@ footer {
 
       document.getElementById('studentName').textContent = `Hello, ${data.name}!`;
 
-      // Handle null percentage values
       const totalPercentage = data.attendance.overallattperformance.totalpercentage;
-      document.getElementById('totalPercentage').textContent = 
-          totalPercentage ? `${totalPercentage}%` : '0%';
+      // Remove the '%' sign from the display since we have it styled separately
+      document.getElementById('totalPercentage').textContent = `${parseFloat(totalPercentage)}`;
 
-      const updatedOn = data.attendance.attandance.dayobjects[0].updatedon;
-      document.getElementById('updatedOn').textContent = `Last Updated: ${updatedOn}`;
+      // Use current time instead of API time
+      const now = new Date();
+      const formattedTime = now.toLocaleDateString() + ' at ' + 
+                           now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      document.getElementById('updatedOn').textContent = `Last Updated: ${formattedTime}`;
 
       const daywiseAttendanceDiv = document.getElementById('daywiseAttendance');
       daywiseAttendanceDiv.innerHTML = '';
-      data.attendance.attandance.dayobjects.forEach(day => {
+      data.attendance.attandance.dayobjects.forEach((day, index) => {
           const dayItem = document.createElement('div');
           dayItem.className = 'session-item';
+          
+          // Add 'today' class to the first day (today)
+          if (index === 0) {
+              dayItem.classList.add('today');
+          }
+          
           dayItem.innerHTML = `
               <h5>${day.day || day.date}</h5>
               <div class="session-circles">
@@ -1026,10 +1636,117 @@ footer {
           `;
           daywiseAttendanceDiv.appendChild(dayItem);
       });
+      
+      // Add improved expand/collapse functionality
+      const expandButton = document.getElementById('expandDays');
+      const dayCard = document.getElementById('dayCard');
+      let expanded = false;
+      
+      expandButton.addEventListener('click', () => {
+          const allDayItems = daywiseAttendanceDiv.querySelectorAll('.session-item:not(.today)');
+          
+          if (!expanded) {
+              // Show all days with staggered animation
+              dayCard.classList.add('expanded');
+              
+              allDayItems.forEach((item, index) => {
+                  item.classList.add('visible');
+                  
+                  // Use setTimeout for staggered reveal
+                  setTimeout(() => {
+                      gsap.to(item, {
+                          opacity: 1,
+                          duration: 0.4,
+                          ease: "power1.out"
+                      });
+                  }, index * 100); // Stagger by 100ms
+              });
+              
+              expandButton.textContent = "Show Less";
+              expandButton.classList.add('expanded');
+              expanded = true;
+          } else {
+              // Animate hiding items first, then remove visible class
+              gsap.to(allDayItems, {
+                  opacity: 0,
+                  duration: 0.3,
+                  stagger: 0.05,
+                  onComplete: () => {
+                      allDayItems.forEach(item => {
+                          item.classList.remove('visible');
+                      });
+                      dayCard.classList.remove('expanded');
+                  }
+              });
+              
+              expandButton.textContent = "Show More Days";
+              expandButton.classList.remove('expanded');
+              expanded = false;
+          }
+      });
 
       renderSubjectChart(data.attendance.overallattperformance.overall);
-      adjustCircleSizes();
-      window.addEventListener('resize', adjustCircleSizes);
+      
+      // Animate percentage on load
+      const percentageElement = document.getElementById('totalPercentage');
+      animatePercentage(percentageElement, parseFloat(totalPercentage));
+  }
+
+  // Function to format the API timestamp into a user-friendly local time
+  function formatLastUpdated(apiTimestamp) {
+      // Sample format: "Sat 15 Feb at 01:45 AM"
+      try {
+          const parts = apiTimestamp.split(' ');
+          const dateParts = parts[1] + ' ' + parts[2] + ' ' + new Date().getFullYear();
+          const timeParts = parts[4] + ' ' + parts[5];
+          
+          const dateObject = new Date(`${dateParts} ${timeParts}`);
+          
+          // Check if valid date
+          if (isNaN(dateObject.getTime())) {
+              return apiTimestamp; // If parsing fails, return original
+          }
+          
+          const now = new Date();
+          const diff = now - dateObject;
+          const diffMinutes = Math.floor(diff / (1000 * 60));
+          
+          // If less than a day old, show relative time
+          if (diffMinutes < 60) {
+              return `${diffMinutes} minutes ago`;
+          } else if (diffMinutes < 24 * 60) {
+              const hours = Math.floor(diffMinutes / 60);
+              return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+          } else {
+              // Format date to local format
+              return dateObject.toLocaleDateString() + ' at ' + 
+                     dateObject.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+          }
+      } catch (e) {
+          return apiTimestamp; // If any error, return original
+      }
+  }
+  
+  // Function to animate percentage counter
+  function animatePercentage(element, targetPercentage) {
+    const duration = 1500; // ms
+    const frameDuration = 1000/60; // 60fps
+    const totalFrames = Math.round(duration / frameDuration);
+    let frame = 0;
+    const target = parseFloat(targetPercentage);
+    
+    const counter = setInterval(() => {
+        frame++;
+        const progress = frame / totalFrames;
+        const currentValue = Math.round(target * progress);
+        
+        if (frame === totalFrames) {
+            clearInterval(counter);
+            element.textContent = target; // Remove the % symbol, it's added via CSS
+        } else {
+            element.textContent = currentValue; // Just the number
+        }
+    }, frameDuration);
   }
 
   function renderSubjectChart(subjectsData) {
@@ -1052,81 +1769,17 @@ footer {
               datasets: [{
                   label: 'Attendance Percentage',
                   data: attendanceValues,
-                  backgroundColor: 'rgba(255, 107, 0, 0.7)', // Orange with transparency
-                  borderColor: '#ff6b00',
-                  borderWidth: 2,
-                  borderRadius: 8,
-                  barThickness: 25,
+                  backgroundColor: 'transparent',
+                  borderColor: '#00f7ff',
+                  borderWidth: 2
               }]
           },
           options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                  legend: {
-                      display: true,
-                      position: 'top',
-                      labels: {
-                          font: {
-                              family: 'Montserrat',
-                              size: 12
-                          },
-                          color: '#333'
-                      }
-                  },
-                  tooltip: {
-                      backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                      titleColor: '#333',
-                      bodyColor: '#333',
-                      titleFont: {
-                          family: 'Montserrat',
-                          size: 14,
-                          weight: 'bold'
-                      },
-                      bodyFont: {
-                          family: 'Montserrat',
-                          size: 13
-                      },
-                      borderColor: '#ff6b00',
-                      borderWidth: 1,
-                      padding: 10,
-                      displayColors: false
-                  }
-              },
               scales: {
                   y: {
                       beginAtZero: true,
-                      max: 100,
-                      grid: {
-                          display: true,
-                          color: 'rgba(0, 0, 0, 0.1)'
-                      },
-                      ticks: {
-                          font: {
-                              family: 'Montserrat',
-                              size: 11
-                          },
-                          color: '#333'
-                      }
-                  },
-                  x: {
-                      grid: {
-                          display: false
-                      },
-                      ticks: {
-                          font: {
-                              family: 'Montserrat',
-                              size: 11
-                          },
-                          color: '#333',
-                          maxRotation: 45,
-                          minRotation: 45
-                      }
+                      max: 100
                   }
-              },
-              animation: {
-                  duration: 2000,
-                  easing: 'easeInOutQuart'
               }
           }
       });
@@ -1148,31 +1801,6 @@ footer {
           case '2': return 'Not Taken';
           default: return '';
       }
-  }
-
-  function adjustCircleSizes() {
-    const sessionItems = document.querySelectorAll('.session-item');
-    
-    sessionItems.forEach(item => {
-      const circlesContainer = item.querySelector('.session-circles');
-      const circles = circlesContainer.querySelectorAll('.session-circle');
-      const containerWidth = circlesContainer.offsetWidth;
-      const totalCircles = circles.length;
-      
-      // Calculate size with 1px gap between circles
-      let size = Math.floor((containerWidth - (totalCircles - 1)) / totalCircles);
-      // Limit maximum size
-      size = Math.min(size, 16);
-      // Ensure minimum size
-      size = Math.max(size, 8);
-      
-      circles.forEach(circle => {
-        circle.style.width = `${size}px`;
-        circle.style.height = `${size}px`;
-        // Adjust checkmark/cross size
-        circle.style.fontSize = `${size * 0.6}px`;
-      });
-    });
   }
 </script>
 
