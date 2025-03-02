@@ -1490,37 +1490,6 @@ footer ul li {
 
  <script>
   document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('attendanceForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const parentNumber = document.getElementById('parentNumber').value.trim();
-
-        if (!parentNumber) {
-            const input = document.getElementById('parentNumber');
-            input.style.border = '2px solid red';
-            gsap.to(input, { x: -10, duration: 0.1, repeat: 5, yoyo: true });
-            return;
-        }
-
-        fetch(`https://sanjaya-netra.89determined.workers.dev/?mobile_number=${parentNumber}`)
-        document.querySelector('.loader').style.display = 'flex';
-        document.getElementById('attendanceData').style.display = 'none';
-
-        try {
-            const response = await fetch(`https://test.89determined.workers.dev/?mobile_number=${parentNumber}`);
-            const data = await response.json();
-
-            document.querySelector('.loader').style.display = 'none';
-            document.querySelector('.input-section').classList.add('hidden');
-            document.querySelector('.header').classList.add('hidden');
-
-            displayAttendanceData(data);
-        } catch (error) {
-           
-            document.querySelector('.loader').style.display = 'none';
-        }
-    });
-
     // Get form elements and popups
     const form = document.getElementById('attendanceForm');
     const parentNumber = document.getElementById('parentNumber');
@@ -1532,19 +1501,19 @@ footer ul li {
     
     // Add functionality for auto-submitting form when 10 digits are entered
     parentNumber.addEventListener('input', function() {
-      // Remove any non-numeric characters
       this.value = this.value.replace(/\D/g, '');
-      
-      // If the length is 10, auto-submit
       if (this.value.length === 10) {
-        setTimeout(() => {
-          form.dispatchEvent(new Event('submit'));
-        }, 5); // Short delay for better UX
+        setTimeout(() => form.dispatchEvent(new Event('submit')), 5);
       }
     });
     
-    // Close popup when close button is clicked
+    // Close popup handlers
     closeModernPopup.addEventListener('click', () => {
+      modernPopup.classList.remove('show');
+      popupOverlay.classList.remove('show');
+    });
+    
+    popupOverlay.addEventListener('click', () => {
       modernPopup.classList.remove('show');
       popupOverlay.classList.remove('show');
     });
@@ -1557,7 +1526,7 @@ footer ul li {
       popupOverlay.classList.add('show');
     }
     
-    // Update form submission to use the modern popup instead of alert
+    // Single form submission handler
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -1569,13 +1538,19 @@ footer ul li {
         return;
       }
       
-      fetch(`https://sanjaya-netra.89determined.workers.dev/?mobile_number=${parentNumberValue}`)
+      // Show loader and hide attendance data
       document.querySelector('.loader').style.display = 'flex';
       document.getElementById('attendanceData').style.display = 'none';
       
       try {
-        const response = await fetch(`https://test.89determined.workers.dev/?mobile_number=${parentNumberValue}`);
-        const data = await response.json();
+        // Make both API calls in parallel
+        const [netraResponse, testResponse] = await Promise.all([
+          fetch(`https://sanjaya-netra.89determined.workers.dev/?mobile_number=${parentNumberValue}`),
+          fetch(`https://test.89determined.workers.dev/?mobile_number=${parentNumberValue}`)
+        ]);
+
+        // We only need the data from the test API for display
+        const data = await testResponse.json();
         
         document.querySelector('.loader').style.display = 'none';
         document.querySelector('.input-section').classList.add('hidden');
@@ -1587,14 +1562,6 @@ footer ul li {
         showModernPopup('Error', 'Incorrect number, try again with your parent\'s number.');
       }
     });
-    
-    // Close popup when clicking outside
-    popupOverlay.addEventListener('click', () => {
-      modernPopup.classList.remove('show');
-      popupOverlay.classList.remove('show');
-    });
-    
-    // Rest of your existing code...
   });
 
   function displayAttendanceData(data) {
