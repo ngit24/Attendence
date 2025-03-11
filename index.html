@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Relocated - Redirecting to ngit24.me</title>
+    <meta http-equiv="refresh" content="5; URL=https://www.ngit24.me">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: #f1f5f9;
+        }
+
+        .warp-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 120vw;
+            height: 120vw;
+            max-width: 600px;
+            max-height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, rgba(15, 23, 42, 0) 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: warpPulse 5s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            width: clamp(280px, 85vw, 420px);
+            padding: clamp(1.5rem, 5vw, 2.5rem);
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 16px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+            text-align: center;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: clamp(1.25rem, 5vw, 2rem);
+            color: #c4b5fd;
+            margin-bottom: clamp(0.75rem, 3vw, 1.25rem);
+            text-shadow: 0 0 6px rgba(99, 102, 241, 0.5);
+            animation: float 2s ease-in-out infinite;
+        }
+
+        p {
+            font-size: clamp(0.875rem, 3.5vw, 1.125rem);
+            color: #e2e8f0;
+            margin-bottom: clamp(0.75rem, 3vw, 1.25rem);
+            line-height: 1.4;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: #fff;
+            text-decoration: none;
+            padding: clamp(0.5rem, 2.5vw, 0.75rem) clamp(1.25rem, 4vw, 2rem);
+            border-radius: 30px;
+            font-size: clamp(0.875rem, 3.5vw, 1rem);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 2s infinite;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.5);
+        }
+
+        .counter {
+            font-size: clamp(0.75rem, 3vw, 0.875rem);
+            color: #a5b4fc;
+            margin-top: clamp(0.75rem, 3vw, 1.25rem);
+            animation: fadeIn 0.5s ease-in-out infinite alternate;
+        }
+
+        .orbit {
+            position: absolute;
+            width: clamp(4px, 1vw, 6px);
+            height: clamp(4px, 1vw, 6px);
+            background: #c4b5fd;
+            border-radius: 50%;
+            animation: orbitMove 5s linear infinite;
+        }
+
+        /* Animations */
+        @keyframes warpPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0.6; }
+            to { opacity: 1; }
+        }
+
+        @keyframes orbitMove {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) rotate(360deg); opacity: 0; }
+        }
+
+        /* Larger screens */
+        @media (min-width: 640px) {
+            .container {
+                width: clamp(320px, 70vw, 450px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="warp-bg"></div>
+    <div class="container">
+        <h1>This Site Has Moved</h1>
+        <p>Our new site is available at:</p>
+        <a href="https://www.ngit24.me" class="btn">www.ngit24.me</a>
+        <p class="counter">Redirecting in <span id="countdown">5</span> seconds...</p>
+    </div>
+
+    <script>
+        let seconds = 5;
+        const countdownElement = document.getElementById('countdown');
+        
+        const countdown = setInterval(function() {
+            seconds--;
+            countdownElement.textContent = seconds;
+            if (seconds <= 0) clearInterval(countdown);
+        }, 1000);
+
+        // Generate orbiting particles
+        for (let i = 0; i < 20; i++) {
+            const orbit = document.createElement('div');
+            orbit.className = 'orbit';
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * 150 + 100;
+            orbit.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
+            orbit.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
+            orbit.style.animationDelay = `${Math.random() * 5}s`;
+            document.body.appendChild(orbit);
+        }
+    </script>
+</body>
+</html>
