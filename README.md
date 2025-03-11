@@ -1,5 +1,7 @@
-# Attendance Viewer for NGIT 1st Year Students
+# Site Relocation Notice
 
-![image](https://github.com/user-attachments/assets/d78261be-9311-437b-bd89-4e20762ac896)
-![image](https://github.com/user-attachments/assets/273e3967-82da-4f26-b6d5-ee4d64cfa194)
+## This Site Has Moved
+
+Our new site is available at:  
+[www.ngit24.me](https://www.ngit24.me)
 
